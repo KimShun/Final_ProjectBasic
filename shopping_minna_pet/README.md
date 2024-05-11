@@ -1,4 +1,4 @@
-# shopping_minna_pet
+# aniMall
 
 2024 S/W Project Basic - Final Team Project
 
