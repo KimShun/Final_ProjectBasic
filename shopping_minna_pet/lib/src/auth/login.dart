@@ -10,13 +10,14 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   late AuthenticationProcess _authenticationProcess;
+  late AuthenticationState _authenticationState;
 
   @override
   void initState() {
     // TODO: implement initState
+    super.initState();
     _authenticationProcess = AuthenticationProcess();
     _authenticationProcess.init();
-    super.initState();
   }
 
   @override
@@ -26,9 +27,11 @@ class _LoginScreenState extends State<LoginScreen> {
         child: ElevatedButton(
             onPressed: () async {
               await _authenticationProcess.googleLogin();
-              AuthenticationState authenticationState = _authenticationProcess.getAuthenticationState();
-              print(authenticationState.status);
-              print(authenticationState.user!.uid);
+              setState(() {
+                _authenticationState = _authenticationProcess.getAuthenticationState();
+              });
+              print(_authenticationState.status);
+              print(_authenticationState.user!.uid);
             },
             child: const Text("구글 로그인")
         ),
