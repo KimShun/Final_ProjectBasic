@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "994118575201",
+    "project_id": "project-minna-pet",
+    "storage_bucket": "project-minna-pet.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:994118575201:android:b1f2d7bb7e791f9f02f620",
+        "android_client_info": {
+          "package_name": "com.example.shopping_minna_pet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "994118575201-3pso9jmghe9gk5g17dso86t6r3ivv888.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAc7_Znp-_MoWheMhCAX5fYo6eZvSim8SU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "994118575201-3pso9jmghe9gk5g17dso86t6r3ivv888.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
