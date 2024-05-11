@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:shopping_minna_pet/src/common/component/color.dart';
 import 'firebase_options.dart';
 
 import 'src/home.dart';
@@ -21,6 +22,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      theme: ThemeData(
+        scaffoldBackgroundColor: BG_COLOR,
+        appBarTheme: AppBarTheme(
+          backgroundColor: BG_COLOR,
+        )
+      ),
       routerConfig: _router,
     );
   }
