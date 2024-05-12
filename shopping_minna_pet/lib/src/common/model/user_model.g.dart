@@ -12,6 +12,11 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
       email: json['email'] as String?,
       profile: json['profile'] as String?,
       discription: json['discription'] as String?,
+      petType: json['petType'] as String?,
+      petName: json['petName'] as String?,
+      petBirthday: json['petBirthday'] == null
+          ? null
+          : DateTime.parse(json['petBirthday'] as String),
     );
 
 Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
@@ -20,4 +25,7 @@ Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'email': instance.email,
       'profile': instance.profile,
       'discription': instance.discription,
+      'petType': instance.petType,
+      'petName': instance.petName,
+      'petBirthday': instance.petBirthday?.toIso8601String(),
     };

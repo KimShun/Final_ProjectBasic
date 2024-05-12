@@ -17,7 +17,7 @@ class _LoginScreenState extends State<LoginScreen> {
         fit: StackFit.expand,
         children: [
           Image.asset("assets/img/aniMall_bg.jpeg",
-            fit: BoxFit.fill,
+            fit: BoxFit.cover,
           ),
           Container(
             color: Colors.black.withOpacity(0.55),
