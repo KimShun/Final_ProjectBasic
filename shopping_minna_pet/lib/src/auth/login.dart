@@ -1,41 +1,49 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:shopping_minna_pet/src/common/authentication_process.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shopping_minna_pet/src/auth/signup.dart';
+import 'package:shopping_minna_pet/src/common/cubit/authentication_cubit.dart';
+import 'package:shopping_minna_pet/src/home.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        fit: StackFit.expand,
-        children: [
-          Image.asset("assets/img/aniMall_bg.jpeg",
-            fit: BoxFit.cover,
-          ),
-          Container(
-            color: Colors.black.withOpacity(0.55),
-            child: const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 32.0, vertical: 8.0),
-              child: SafeArea(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    _loginPageTop(),
-                    _loginPageCenter(),
-                    SizedBox(height: 20.0),
-                  ],
+      body: BlocBuilder<AuthenticationCubit, AuthenticationState>(
+        builder: (context, state) {
+          if (state.status == AuthenticationStatus.unAuthenticated) {
+            return const SignUpScreen();
+          }
+          else if(state.status == AuthenticationStatus.authentication) {
+            return const HomeScreen();
+          }
+          return Stack(
+            fit: StackFit.expand,
+            children: [
+              Image.asset("assets/img/aniMall_bg.jpeg",
+                fit: BoxFit.cover,
+              ),
+              Container(
+                color: Colors.black.withOpacity(0.55),
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 32.0, vertical: 8.0),
+                  child: SafeArea(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        _loginPageTop(),
+                        _loginPageCenter(),
+                        SizedBox(height: 20.0),
+                      ],
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
-        ],
+            ],
+          );
+        }
       ),
     );
   }
@@ -70,57 +78,45 @@ class _loginPageTop extends StatelessWidget {
 }
 
 
-class _loginPageCenter extends StatefulWidget {
+class _loginPageCenter extends StatelessWidget {
   const _loginPageCenter({super.key});
-
-  @override
-  State<_loginPageCenter> createState() => _loginPageCenterState();
-}
-
-class _loginPageCenterState extends State<_loginPageCenter> {
-  late AuthenticationProcess _authenticationProcess;
-  late AuthenticationState _authenticationState;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _authenticationProcess = AuthenticationProcess();
-    _authenticationProcess.init();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Text("로그인 / 회원가입",
+        const Text("[ 로그인 / 회원가입 ]",
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
             fontSize: 13.0,
-            fontFamily: "Jua"
+            fontFamily: "Jua",
           ),
         ),
         const SizedBox(height: 10.0),
         PlatformLoginBtn(
           "assets/img/kakao_logo.png",
-          "Kakao로 계속하기",
+          "카카오 로그인",
           Colors.black,
-          Colors.yellowAccent,
-            () {},
+          const Color(0xFFFDDC3F),
+          () {
+            context.read<AuthenticationCubit>().kakaoLogin();
+          },
         ),
         const SizedBox(height: 15.0),
         PlatformLoginBtn(
           "assets/img/google_logo.png",
-          "Google로 계속하기",
+          "구글 로그인",
           Colors.black,
           Colors.white,
-          _googleLogin,
+          () {
+            context.read<AuthenticationCubit>().googleLogin();
+          }
         ),
         const SizedBox(height: 15.0),
         PlatformLoginBtn(
           "assets/img/apple_logo.png",
-          "Apple로 계속하기",
+          "애플 로그인",
           Colors.white,
           Colors.black87,
           () {}
@@ -133,46 +129,35 @@ class _loginPageCenterState extends State<_loginPageCenter> {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 280,
+        width: 300,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.0),
           color: bgColor,
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 8.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Image.asset(imgPath,
                 width: 33,
                 height: 33,
               ),
-              const SizedBox(width: 30.0),
-              Text(title,
-                style: TextStyle(
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.bold,
-                  color: titleColor,
+              Expanded(
+                child: Center(
+                  child: Text(title,
+                    style: TextStyle(
+                      fontSize: 15.0,
+                      fontWeight: FontWeight.bold,
+                      color: titleColor,
+                    ),
+                  ),
                 ),
-              )
+              ),
             ],
           ),
         )
       ),
     );
-  }
-
-  void _googleLogin() async {
-    await _authenticationProcess.googleLogin();
-    _authenticationState = _authenticationProcess.getAuthenticationState();
-
-    if(_authenticationState.status == AuthenticationStatus.unAuthenticated) {
-      context.push("/signup");
-    }
-    else if(_authenticationState.status == AuthenticationStatus.authentication) {
-      context.go("/");
-    }
-
-    print(_authenticationState.status);
   }
 }

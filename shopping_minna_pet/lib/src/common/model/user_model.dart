@@ -12,7 +12,7 @@ class UserModel extends Equatable {
   final String? discription;
   final String? petType;
   final String? petName;
-  final DateTime? petBirthday;
+  final String? petBirthday;
 
   const UserModel({
     this.uid,
@@ -36,7 +36,7 @@ class UserModel extends Equatable {
     String? discription,
     String? petType,
     String? petName,
-    DateTime? petBirthday
+    String? petBirthday
   }) {
     return UserModel(
       uid: uid ?? this.uid,
