@@ -1,28 +1,22 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shopping_minna_pet/src/auth/cubit/signup_cubit.dart';
 import 'package:shopping_minna_pet/src/common/component/app_text.dart';
 import 'package:shopping_minna_pet/src/common/cubit/authentication_cubit.dart';
-import 'package:shopping_minna_pet/src/common/repository/authentication_repository.dart';
 
 import '../common/cubit/upload_cubit.dart';
-import '../common/model/user_model.dart';
 
-class SignUpScreen extends StatefulWidget {
+class SignUpScreen extends StatelessWidget {
   const SignUpScreen({super.key});
 
   @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
-}
-
-class _SignUpScreenState extends State<SignUpScreen> {
-  @override
   Widget build(BuildContext context) {
     final double phoneWidth = MediaQuery.of(context).size.width;
-    
+
     return Scaffold(
       extendBody: true,
       body: MultiBlocListener(
@@ -128,7 +122,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(bottom: 20.0),
+        padding: EdgeInsets.only(bottom: phoneWidth >= 400 ? 50.0 : 40.0),
         child: _SignUpButton(
           phoneWidth: phoneWidth,
         ),
@@ -400,9 +394,12 @@ class _SignUpButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
             ),
           ),
-          child: AppText(
-            title: "취소..",
-            fontSize: phoneWidth >= 400 ? 20.0 : 18.0,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10.0),
+            child: AppText(
+              title: "취소..",
+              fontSize: phoneWidth >= 400 ? 20.0 : 18.0,
+            ),
           )
         ),
         const SizedBox(width: 15.0),
@@ -417,7 +414,7 @@ class _SignUpButton extends StatelessWidget {
             ),
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
             child: AppText(
               title: "가입완료!!",
               fontSize: phoneWidth >= 400 ? 20.0 : 18.0,

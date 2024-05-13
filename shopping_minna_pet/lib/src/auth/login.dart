@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopping_minna_pet/src/auth/signup.dart';
@@ -10,6 +9,8 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double phoneWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       body: BlocBuilder<AuthenticationCubit, AuthenticationState>(
         builder: (context, state) {
@@ -27,15 +28,15 @@ class LoginScreen extends StatelessWidget {
               ),
               Container(
                 color: Colors.black.withOpacity(0.55),
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 32.0, vertical: 8.0),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 8.0),
                   child: SafeArea(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        _loginPageTop(),
-                        _loginPageCenter(),
-                        SizedBox(height: 20.0),
+                        _loginPageTop(phoneWidth: phoneWidth),
+                        _loginPageCenter(phoneWidth: phoneWidth),
+                        const SizedBox(height: 20.0),
                       ],
                     ),
                   ),
@@ -50,15 +51,19 @@ class LoginScreen extends StatelessWidget {
 }
 
 class _loginPageTop extends StatelessWidget {
-  const _loginPageTop({super.key});
+  final double phoneWidth;
+
+  const _loginPageTop({
+    required this.phoneWidth,
+    super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    return Column(
       children: [
         Text("aniMall",
           style: TextStyle(
-            fontSize: 33.0,
+            fontSize: phoneWidth >= 400 ? 40.0 : 35.0,
             color: Colors.white,
             fontWeight: FontWeight.bold,
             fontFamily: "Jua"
@@ -66,7 +71,7 @@ class _loginPageTop extends StatelessWidget {
         ),
         Text("로그인하여 더 다양한 기능을 만나 보세요! \n소중한 친구들이 당신을 기다리고 있습니다!",
           style: TextStyle(
-            fontSize: 13.0,
+            fontSize: phoneWidth >= 400 ? 15.0 : 13.0,
             color: Colors.white,
             fontWeight: FontWeight.bold,
             fontFamily: "Jua"
@@ -79,17 +84,21 @@ class _loginPageTop extends StatelessWidget {
 
 
 class _loginPageCenter extends StatelessWidget {
-  const _loginPageCenter({super.key});
+  final double phoneWidth;
+
+  const _loginPageCenter({
+    required this.phoneWidth,
+    super.key});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Text("[ 로그인 / 회원가입 ]",
+        Text("[ 로그인 / 회원가입 ]",
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
-            fontSize: 13.0,
+            fontSize: phoneWidth >= 400 ? 15.0 : 13.0,
             fontFamily: "Jua",
           ),
         ),
@@ -140,14 +149,14 @@ class _loginPageCenter extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Image.asset(imgPath,
-                width: 33,
-                height: 33,
+                width: phoneWidth >= 400 ? 35 : 33,
+                height: phoneWidth >= 400 ? 35 : 33,
               ),
               Expanded(
                 child: Center(
                   child: Text(title,
                     style: TextStyle(
-                      fontSize: 15.0,
+                      fontSize: phoneWidth >= 400 ? 17.0 : 15.0,
                       fontWeight: FontWeight.bold,
                       color: titleColor,
                     ),
