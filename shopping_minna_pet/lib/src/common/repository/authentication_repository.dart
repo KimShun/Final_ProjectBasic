@@ -16,6 +16,7 @@ class AuthenticationRepository {
   // Firebase - Logout
   Future<void> logout() async {
     await _firebaseAuth.signOut();
+    print("logout!");
   }
 
   // Google Authentication - login

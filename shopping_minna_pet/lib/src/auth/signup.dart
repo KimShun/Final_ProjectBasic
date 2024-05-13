@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shopping_minna_pet/src/common/component/app_text.dart';
+import 'package:shopping_minna_pet/src/common/repository/authentication_repository.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -13,6 +14,15 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  late AuthenticationRepository _authenticationRepository;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    _authenticationRepository = AuthenticationRepository();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final double phoneWidth = MediaQuery.of(context).size.width;
@@ -39,7 +49,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       _UserProfileDetailField(phoneWidth: phoneWidth),
                       const SizedBox(height: 20.0),
                       // 버튼 3개 ( 취소, 완료, 새로고침 )
-                      _SignUpButton(phoneWidth: phoneWidth)
+                      _SignUpButton(
+                        phoneWidth: phoneWidth,
+                        authenticationRepository: _authenticationRepository,
+                      )
                     ],
                   ),
                 ),
@@ -284,9 +297,11 @@ class _UserProfileDetailField extends StatelessWidget {
 
 class _SignUpButton extends StatelessWidget {
   final double phoneWidth;
+  final AuthenticationRepository authenticationRepository;
   
   const _SignUpButton({
     required this.phoneWidth,
+    required this.authenticationRepository,
     super.key});
 
   @override
@@ -295,7 +310,8 @@ class _SignUpButton extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
+              await authenticationRepository.logout();
               context.pop();
             },
             style: ElevatedButton.styleFrom(

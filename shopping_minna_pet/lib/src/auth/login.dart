@@ -170,7 +170,9 @@ class _loginPageCenterState extends State<_loginPageCenter> {
       context.push("/signup");
     }
     else if(_authenticationState.status == AuthenticationStatus.authentication) {
-      context.push("/");
+      context.go("/");
     }
+
+    print(_authenticationState.status);
   }
 }
