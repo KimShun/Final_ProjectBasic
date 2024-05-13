@@ -48,7 +48,7 @@ class SignUpCubit extends Cubit<SignUpState> {
   }
 
   void save() {
-    if(state.name == null || state.name == "") return;
+    if(state.name == null || state.name == "" || state.profileFile == null) return;
     emit(state.copyWith(status: SignUpStatus.loading));
     if(state.profileFile != null) {
       emit(state.copyWith(status: SignUpStatus.uploading));
