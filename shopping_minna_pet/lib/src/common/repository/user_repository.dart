@@ -3,7 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../model/user_model.dart';
 
 class UserRepository {
-  final FirebaseFirestore db = FirebaseFirestore.instance;
+  FirebaseFirestore db;
+  UserRepository(this.db);
 
   Future<UserModel?> findUserOne(String uid) async {
     try {

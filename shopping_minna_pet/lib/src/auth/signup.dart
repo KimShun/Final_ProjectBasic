@@ -1,104 +1,167 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shopping_minna_pet/src/auth/cubit/signup_cubit.dart';
 import 'package:shopping_minna_pet/src/common/component/app_text.dart';
-import 'package:shopping_minna_pet/src/common/repository/authentication_repository.dart';
+import 'package:shopping_minna_pet/src/common/cubit/authentication_cubit.dart';
 
-class SignUpScreen extends StatefulWidget {
+import '../common/cubit/upload_cubit.dart';
+
+class SignUpScreen extends StatelessWidget {
   const SignUpScreen({super.key});
-
-  @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
-}
-
-class _SignUpScreenState extends State<SignUpScreen> {
-  late AuthenticationRepository _authenticationRepository;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    _authenticationRepository = AuthenticationRepository();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
     final double phoneWidth = MediaQuery.of(context).size.width;
-    
+
     return Scaffold(
-      body: Stack(
-        fit: StackFit.expand,
-        children: [
-          Image.asset("assets/img/aniMall_bg.jpeg",
-            fit: BoxFit.cover,
+      extendBody: true,
+      body: MultiBlocListener(
+        listeners: [
+          BlocListener<SignUpCubit, SignUpState>(
+            listenWhen: (previous, current) => previous.status != current.status,
+            listener: (context, state) {
+              switch (state.status) {
+                case SignUpStatus.init:
+                  break;
+                case SignUpStatus.loading:
+                  break;
+                case SignUpStatus.uploading:
+                  context.read<UploadCubit>().uploadUserProfile(state.profileFile!, state.userModel!.uid!);
+                  break;
+                case SignUpStatus.success:
+                  context.read<AuthenticationCubit>().reloadAuth();
+                  break;
+                case SignUpStatus.error:
+                  break;
+              }
+            }
           ),
-          Container(
-            color: Colors.black.withOpacity(0.55),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
-              child: SafeArea(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      // 프로필 이미지 설정
-                      const _UserProfileImageField(),
-                      const SizedBox(height: 20.0),
-                      // 주인 & 반려동물 정보입력
-                      _UserProfileDetailField(phoneWidth: phoneWidth),
-                      const SizedBox(height: 20.0),
-                      // 버튼 3개 ( 취소, 완료, 새로고침 )
-                      _SignUpButton(
-                        phoneWidth: phoneWidth,
-                        authenticationRepository: _authenticationRepository,
-                      )
-                    ],
+          BlocListener<UploadCubit, UploadState>(
+            listener: (context, state) {
+              switch (state.status) {
+                case UploadStatus.init:
+                  break;
+                case UploadStatus.uploading:
+                  context.read<SignUpCubit>().uploadPercent(state.percent!.toStringAsFixed(2));
+                  break;
+                case UploadStatus.success:
+                  context.read<SignUpCubit>().updateProfileImageUrl(state.url!);
+                  break;
+                case UploadStatus.error:
+                  break;
+              }
+            },
+          )
+        ],
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            Image.asset("assets/img/aniMall_bg.jpeg",
+              fit: BoxFit.cover,
+            ),
+            Container(
+              color: Colors.black.withOpacity(0.55),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
+                child: SafeArea(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        // 프로필 이미지 설정
+                        _UserProfileImageField(),
+                        const SizedBox(height: 20.0),
+                        // 주인 & 반려동물 정보입력
+                        _UserProfileDetailField(phoneWidth: phoneWidth),
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        ],
+            BlocBuilder<SignUpCubit, SignUpState>(
+              buildWhen: (previous, current) => previous.percent != current.percent || previous.status != current.status,
+              builder: (context, state) {
+                if(state.percent != null && state.status == SignUpStatus.uploading) {
+                  return Container(
+                    color: Colors.black.withOpacity(0.8),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        AppText(
+                          title: "[ 회원가입 중... ]",
+                          fontSize: phoneWidth >= 400 ? 18.0 : 16.0,
+                          color: Colors.yellow,
+                        ),
+                        const SizedBox(height: 10.0),
+                        SizedBox(
+                          width: phoneWidth >= 400 ? 35.0 : 30.0,
+                          height: phoneWidth >= 400 ? 35.0 : 30.0,
+                          child: const CircularProgressIndicator(
+                            strokeWidth: 2.0,
+                            color: Colors.yellowAccent,
+                          ),
+                        ),
+                        const SizedBox(height: 10.0),
+                        AppText(
+                          title: "${state.percent}%",
+                          fontSize: phoneWidth >= 400 ? 16.0 : 14.0,
+                        )
+                      ],
+                    ),
+                  );
+                } else {
+                  return Container();
+                }
+              },
+            )
+          ],
+        ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: EdgeInsets.only(bottom: phoneWidth >= 400 ? 50.0 : 40.0),
+        child: _SignUpButton(
+          phoneWidth: phoneWidth,
+        ),
       ),
     );
   }
 }
 
-class _UserProfileImageField extends StatefulWidget {
-  const _UserProfileImageField({super.key});
-
-  @override
-  State<_UserProfileImageField> createState() => _UserProfileImageFieldState();
-}
-
-class _UserProfileImageFieldState extends State<_UserProfileImageField> {
+class _UserProfileImageField extends StatelessWidget {
+  _UserProfileImageField({super.key});
   final ImagePicker _picker = ImagePicker();
-  File? imagePath;
 
   @override
   Widget build(BuildContext context) {
+    var profileImage = context.select<SignUpCubit, File?>((value) => value.state.profileFile);
     return GestureDetector(
       onTap: () async {
         var image = await _picker.pickImage(source: ImageSource.gallery);
-        setState(() {
-          imagePath = File(image!.path);
-        });
+        context.read<SignUpCubit>().changeProfileImage(image);
       },
       child: Column(
         children: [
           CircleAvatar(
             backgroundColor: Colors.grey,
             radius: 50.0,
-            backgroundImage: imagePath == null
+            backgroundImage: profileImage == null
                 ? Image.asset("assets/icon/default_avatar.png").image
-                : Image.file(imagePath!).image,
+                : Image.file(profileImage).image,
           ),
           const SizedBox(height: 10.0),
           AppText(
             title: "[ 프로필 이미지를 설정해주세요. ]",
             fontSize: MediaQuery.of(context).size.width >= 400 ? 14.0 : 12.0,
             color: Colors.yellow,
+          ),
+          AppText(
+            title: "${context.select<AuthenticationCubit, String?>((value) => value.state.user!.email)}",
+            fontSize: MediaQuery.of(context).size.width >= 400 ? 14.0 : 12.0,
+            color: Colors.white,
           ),
         ],
       ),
@@ -120,15 +183,15 @@ class _UserProfileDetailField extends StatelessWidget {
       height: MediaQuery.of(context).size.height * 0.6,
       child: ListView(
         children: [
-          _ownerInfoField(),
+          _ownerInfoField(context),
           const SizedBox(height: 10.0),
-          _animalInfoField(),
+          _animalInfoField(context),
         ],
       ),
     );
   }
 
-  Widget _ownerInfoField() {
+  Widget _ownerInfoField(BuildContext context) {
     return Column(
       children: [
         AppText(
@@ -145,6 +208,9 @@ class _UserProfileDetailField extends StatelessWidget {
               fontSize: phoneWidth >= 400.0 ? 17.0 : 15.0,
             ),
             TextField(
+              onChanged: (value) {
+                context.read<SignUpCubit>().changeName(value);
+              },
               maxLength: 10,
               maxLines: 1,
               decoration: const InputDecoration(
@@ -171,6 +237,9 @@ class _UserProfileDetailField extends StatelessWidget {
               fontSize: phoneWidth >= 400.0 ? 17.0 : 15.0,
             ),
             TextField(
+              onChanged: (value) {
+                context.read<SignUpCubit>().changeDiscription(value);
+              },
               maxLength: 20,
               maxLines: 1,
               decoration: const InputDecoration(
@@ -193,7 +262,7 @@ class _UserProfileDetailField extends StatelessWidget {
     );
   }
 
-  Widget _animalInfoField() {
+  Widget _animalInfoField(BuildContext context) {
     return Column(
       children: [
         AppText(
@@ -210,6 +279,9 @@ class _UserProfileDetailField extends StatelessWidget {
               fontSize: phoneWidth >= 400.0 ? 17.0 : 15.0,
             ),
             TextField(
+              onChanged: (value) {
+                context.read<SignUpCubit>().changePetName(value);
+              },
               maxLength: 20,
               maxLines: 1,
               decoration: InputDecoration(
@@ -239,6 +311,9 @@ class _UserProfileDetailField extends StatelessWidget {
               fontSize: phoneWidth >= 400.0 ? 17.0 : 15.0,
             ),
             TextField(
+              onChanged: (value) {
+                context.read<SignUpCubit>().changePetType(value);
+              },
               maxLength: 20,
               maxLines: 1,
               decoration: InputDecoration(
@@ -266,6 +341,9 @@ class _UserProfileDetailField extends StatelessWidget {
                   fontSize: phoneWidth >= 400.0 ? 17.0 : 15.0,
                 ),
                 TextField(
+                  onChanged: (value) {
+                    context.read<SignUpCubit>().changePetBirthday(value);
+                  },
                   maxLength: 20,
                   maxLines: 1,
                   decoration: InputDecoration(
@@ -287,7 +365,6 @@ class _UserProfileDetailField extends StatelessWidget {
                 ),
               ],
             ),
-            // SizedBox(height: MediaQuery.of(context).viewInsets.bottom * 0.7),
           ],
         ),
       ],
@@ -297,11 +374,9 @@ class _UserProfileDetailField extends StatelessWidget {
 
 class _SignUpButton extends StatelessWidget {
   final double phoneWidth;
-  final AuthenticationRepository authenticationRepository;
   
   const _SignUpButton({
     required this.phoneWidth,
-    required this.authenticationRepository,
     super.key});
 
   @override
@@ -310,47 +385,41 @@ class _SignUpButton extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         ElevatedButton(
-            onPressed: () async {
-              await authenticationRepository.logout();
-              context.pop();
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.redAccent,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
+          onPressed: () {
+            context.read<AuthenticationCubit>().logout();
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.redAccent,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
             ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10.0),
             child: AppText(
               title: "취소..",
               fontSize: phoneWidth >= 400 ? 20.0 : 18.0,
-            )
-        ),
-        const SizedBox(width: 10.0),
-        ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.orangeAccent,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
             ),
+          )
+        ),
+        const SizedBox(width: 15.0),
+        ElevatedButton(
+          onPressed: () {
+            context.read<SignUpCubit>().save();
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.orangeAccent,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
             child: AppText(
               title: "가입완료!!",
               fontSize: phoneWidth >= 400 ? 20.0 : 18.0,
-            )
-        ),
-        const SizedBox(width: 10.0),
-        ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.greenAccent,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
             ),
-            child: const Icon(Icons.refresh_outlined,
-              color: Colors.black54,
-            )
+          )
         ),
       ],
     );
