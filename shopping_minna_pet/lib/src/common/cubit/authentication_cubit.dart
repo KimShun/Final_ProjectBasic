@@ -50,6 +50,7 @@ class AuthenticationCubit extends HydratedCubit<AuthenticationState> {
 
   void logout() async {
     await _authenticationRepository.logout();
+    emit(state.copyWith(status: AuthenticationStatus.unknown));
   }
 
   // @override
@@ -70,7 +71,11 @@ class AuthenticationCubit extends HydratedCubit<AuthenticationState> {
 
   @override
   Map<String, dynamic>? toJson(AuthenticationState state) {
-    return state.toJson();
+    try {
+      return state.toJson();
+    } catch(_) {
+      return null;
+    }
   }
 }
 
