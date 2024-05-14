@@ -4,8 +4,20 @@ import 'package:shopping_minna_pet/src/auth/signup.dart';
 import 'package:shopping_minna_pet/src/common/cubit/authentication_cubit.dart';
 import 'package:shopping_minna_pet/src/home.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    context.read<AuthenticationCubit>().init();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

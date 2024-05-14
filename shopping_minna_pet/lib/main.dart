@@ -5,8 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shopping_minna_pet/src/auth/cubit/signup_cubit.dart';
+import 'package:shopping_minna_pet/src/common/component/api_key.dart';
 import 'package:shopping_minna_pet/src/common/component/color.dart';
 import 'package:shopping_minna_pet/src/common/cubit/authentication_cubit.dart';
 import 'package:shopping_minna_pet/src/common/cubit/upload_cubit.dart';
@@ -23,10 +26,15 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
+  // hydrated bloc setting
+  HydratedBloc.storage = await HydratedStorage.build(
+    storageDirectory: await getApplicationDocumentsDirectory(),
+  );
+
   // flutter kakaosdk setting
   KakaoSdk.init(
-    nativeAppKey: '8dd998fc8c007ccf614c7ba1ae62a848',
-    javaScriptAppKey: '1f43b3927669c4108ad0c36bef63e717'
+    nativeAppKey: kakao_native_key,
+    javaScriptAppKey: kakao_javascript_key
   );
 
   runApp(const MyApp());

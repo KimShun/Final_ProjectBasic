@@ -1,12 +1,12 @@
 import 'package:equatable/equatable.dart';
-import 'package:bloc/bloc.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:json_annotation/json_annotation.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:shopping_minna_pet/src/common/repository/authentication_repository.dart';
 import 'package:shopping_minna_pet/src/common/repository/user_repository.dart';
 
 import '../model/user_model.dart';
 
-class AuthenticationCubit extends Cubit<AuthenticationState> with ChangeNotifier {
+class AuthenticationCubit extends HydratedCubit<AuthenticationState> {
   final AuthenticationRepository _authenticationRepository;
   final UserRepository _userRepository;
 
@@ -52,14 +52,29 @@ class AuthenticationCubit extends Cubit<AuthenticationState> with ChangeNotifier
     await _authenticationRepository.logout();
   }
 
+  // @override
+  // void onChange(Change<AuthenticationState> change) {
+  //   // TODO: implement onChange
+  //   super.onChange(change);
+  //   print(change);
+  // }
+
   @override
-  void onChange(Change<AuthenticationState> change) {
-    // TODO: implement onChange
-    super.onChange(change);
-    print(change);
+  AuthenticationState? fromJson(Map<String, dynamic> json) {
+    try {
+      return AuthenticationState.fromJson(json);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  @override
+  Map<String, dynamic>? toJson(AuthenticationState state) {
+    return state.toJson();
   }
 }
 
+@JsonEnum(fieldRename: FieldRename.snake)
 enum AuthenticationStatus {
   authentication,
   unAuthenticated,
@@ -85,6 +100,20 @@ class AuthenticationState extends Equatable {
       status: status ?? this.status,
       user: user ?? this.user,
     );
+  }
+
+  factory AuthenticationState.fromJson(Map<String, dynamic> json) {
+    return AuthenticationState(
+      status: json['status'] as AuthenticationStatus,
+      user: json['user'] != null ? UserModel.fromJson(json['user']) : null,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'status': status.toString(),
+      'user': user!.toMap(),
+    };
   }
 
   @override
