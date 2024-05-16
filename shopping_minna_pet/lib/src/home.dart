@@ -14,8 +14,40 @@ class HomeScreen extends StatelessWidget {
           return Column(
             children: [
               const AppText(title: "로그인 성공!", fontSize: 20.0, color: Colors.black,),
-              Image.network(state.user!.profile!),
-              AppText(title: "${state.user!.name!}", fontSize: 18.0, color: Colors.black,)
+              CircleAvatar(
+                radius: 50.0,
+                backgroundImage: Image.network(state.user!.profile!).image,
+              ),
+              AppText(title: "${state.user!.name!}", fontSize: 18.0, color: Colors.black),
+              ElevatedButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text("알림"),
+                        content: const Text("정말로 로그아웃을 하시겠습니까?"),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              context.read<AuthenticationCubit>().logout();
+                            },
+                            child: const Text("확인"),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text("취소"),
+                          )
+                        ],
+                      );
+                    }
+                  );
+                },
+                child: const Text("로그아웃")
+              )
             ],
           );
         },
