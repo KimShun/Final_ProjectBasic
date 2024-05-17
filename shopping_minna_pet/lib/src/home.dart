@@ -18,7 +18,7 @@ class HomeScreen extends StatelessWidget {
                 radius: 50.0,
                 backgroundImage: Image.network(state.user!.profile!).image,
               ),
-              AppText(title: "${state.user!.name!}", fontSize: 18.0, color: Colors.black),
+              AppText(title: "${state.user!.name}", fontSize: 18.0, color: Colors.black),
               ElevatedButton(
                 onPressed: () {
                   showDialog(

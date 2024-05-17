@@ -7,8 +7,10 @@ import '../model/user_model.dart';
 
 class AuthenticationRepository {
   FirebaseAuth _firebaseAuth;
+  String? firebaseEmail;
+  Kakao.User? kakaoUser;
   String? platform;
-  AuthenticationRepository(this._firebaseAuth, this.platform);
+  AuthenticationRepository(this._firebaseAuth, this.firebaseEmail, this.kakaoUser, this.platform);
 
   Stream<UserModel?> get user{
     return _firebaseAuth.authStateChanges().map<UserModel?>((user) {
@@ -16,7 +18,7 @@ class AuthenticationRepository {
           ? null : UserModel(
             name: user.displayName,
             uid: user.uid,
-            email: user.email,
+            email: platform! == "Google" || platform! == "Apple" ? firebaseEmail! : kakaoUser!.kakaoAccount?.email,
             adminAccount: false,
             platform: platform!
           );
@@ -40,8 +42,9 @@ class AuthenticationRepository {
     );
 
     await _firebaseAuth.signInWithCredential(credential);
+    firebaseEmail = googleUser!.email;
     platform = "Google";
-    print("run!");
+    print(firebaseEmail);
   }
 
   Future<void> signInWithKakao() async {
@@ -86,5 +89,6 @@ class AuthenticationRepository {
 
     await _firebaseAuth.signInWithCredential(credential);
     platform = "Kakao";
+    kakaoUser = await Kakao.UserApi.instance.me();
   }
 }

@@ -65,7 +65,7 @@ class _MyAppState extends State<MyApp> {
 
     return MultiRepositoryProvider(
       providers: [
-        RepositoryProvider(create: (context) => AuthenticationRepository(FirebaseAuth.instance, null)),
+        RepositoryProvider(create: (context) => AuthenticationRepository(FirebaseAuth.instance, null, null, null)),
         RepositoryProvider(create: (context) => UserRepository(db)),
       ],
       child: MultiBlocProvider(

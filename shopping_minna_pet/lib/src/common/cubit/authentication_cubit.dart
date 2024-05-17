@@ -26,14 +26,15 @@ class AuthenticationCubit extends HydratedCubit<AuthenticationState> {
     } else {
       // TODO 로그인 상태
       var result = await _userRepository.findUserOne(user.uid!);
-      if(result == null) {
+      var checkRegisterEmail = await _userRepository.findUserOneFromEmail(user.email!);
+      if(checkRegisterEmail == null && result == null) {
         emit(state.copyWith(user: user, status: AuthenticationStatus.unAuthenticated));
       } else {
-        if(result.platform != user.platform) {
-          emit(state.copyWith(user: result, status: AuthenticationStatus.error));
+        if(checkRegisterEmail!.platform != user.platform) {
+          print("!!");
+          emit(state.copyWith(user: checkRegisterEmail, status: AuthenticationStatus.error));
         } else {
-          emit(state.copyWith(
-              user: result, status: AuthenticationStatus.authentication));
+          emit(state.copyWith(user: result, status: AuthenticationStatus.authentication));
         }
       }
     }
