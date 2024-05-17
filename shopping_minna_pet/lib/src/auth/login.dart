@@ -4,6 +4,8 @@ import 'package:shopping_minna_pet/src/auth/signup.dart';
 import 'package:shopping_minna_pet/src/common/cubit/authentication_cubit.dart';
 import 'package:shopping_minna_pet/src/home.dart';
 
+import '../common/model/user_model.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -26,7 +28,10 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: BlocBuilder<AuthenticationCubit, AuthenticationState>(
         builder: (context, state) {
-          if (state.status == AuthenticationStatus.unAuthenticated) {
+          if (state.status == AuthenticationStatus.error) {
+            return _alreadyEmailError(state.user!);
+          }
+          else if (state.status == AuthenticationStatus.unAuthenticated) {
             return const SignUpScreen();
           }
           else if(state.status == AuthenticationStatus.authentication) {
@@ -58,6 +63,21 @@ class _LoginScreenState extends State<LoginScreen> {
           );
         }
       ),
+    );
+  }
+
+  Widget _alreadyEmailError(UserModel user) {
+    return AlertDialog(
+      title: const Text("알림"),
+      content: Text("이미 가입되어 있는 이메일입니다. \n다른 플랫폼으로 로그인 해주세요. \n${user.email}"),
+      actions: [
+        TextButton(
+          onPressed: () {
+            context.read<AuthenticationCubit>().logout();
+          },
+          child: const Text("확인"),
+        ),
+      ],
     );
   }
 }

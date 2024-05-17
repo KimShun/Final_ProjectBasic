@@ -159,7 +159,8 @@ class _UserProfileImageField extends StatelessWidget {
             color: Colors.yellow,
           ),
           AppText(
-            title: "${context.select<AuthenticationCubit, String?>((value) => value.state.user!.email)}",
+            title: "${context.select<AuthenticationCubit, String?>((value) => value.state.user!.platform)}: "
+                + "${context.select<AuthenticationCubit, String?>((value) => value.state.user!.email)}",
             fontSize: MediaQuery.of(context).size.width >= 400 ? 14.0 : 12.0,
             color: Colors.white,
           ),

@@ -7,12 +7,21 @@ import '../model/user_model.dart';
 
 class AuthenticationRepository {
   FirebaseAuth _firebaseAuth;
-  AuthenticationRepository(this._firebaseAuth);
+  String? firebaseEmail;
+  Kakao.User? kakaoUser;
+  String? platform;
+  AuthenticationRepository(this._firebaseAuth, this.firebaseEmail, this.kakaoUser, this.platform);
 
   Stream<UserModel?> get user{
     return _firebaseAuth.authStateChanges().map<UserModel?>((user) {
       return user == null
-          ? null : UserModel(name: user.displayName, uid: user.uid, email: user.email);
+          ? null : UserModel(
+            name: user.displayName,
+            uid: user.uid,
+            email: platform! == "Google" || platform! == "Apple" ? firebaseEmail! : kakaoUser!.kakaoAccount?.email,
+            adminAccount: false,
+            platform: platform!
+          );
     });
   }
 
@@ -33,6 +42,9 @@ class AuthenticationRepository {
     );
 
     await _firebaseAuth.signInWithCredential(credential);
+    firebaseEmail = googleUser!.email;
+    platform = "Google";
+    print(firebaseEmail);
   }
 
   Future<void> signInWithKakao() async {
@@ -72,9 +84,11 @@ class AuthenticationRepository {
     var credential = provider.credential(
       idToken: token!.idToken,
       // 카카오 로그인에서 발급된 idToken(카카오 설정에서 OpenID Connect가 활성화 되어있어야함)
-      accessToken: token!.accessToken, // 카카오 로그인에서 발급된 accessToken
+      accessToken: token.accessToken, // 카카오 로그인에서 발급된 accessToken
     );
 
     await _firebaseAuth.signInWithCredential(credential);
+    platform = "Kakao";
+    kakaoUser = await Kakao.UserApi.instance.me();
   }
 }

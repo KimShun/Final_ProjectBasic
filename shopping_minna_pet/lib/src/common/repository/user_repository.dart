@@ -19,6 +19,19 @@ class UserRepository {
     }
   }
 
+  Future<UserModel?> findUserOneFromEmail(String email) async {
+    try {
+      var doc = await db.collection("users").where("email", isEqualTo: email).get();
+      if(doc.docs.isEmpty) {
+        return null;
+      } else {
+        return UserModel.fromJson(doc.docs.first.data());
+      }
+    } catch(e) {
+      return null;
+    }
+  }
+
   Future<bool> joinUser(UserModel userModel) async {
     try {
       db.collection("users").add(userModel.toMap());
