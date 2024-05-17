@@ -29,7 +29,12 @@ class AuthenticationCubit extends HydratedCubit<AuthenticationState> {
       if(result == null) {
         emit(state.copyWith(user: user, status: AuthenticationStatus.unAuthenticated));
       } else {
-        emit(state.copyWith(user: result, status: AuthenticationStatus.authentication));
+        if(result.platform != user.platform) {
+          emit(state.copyWith(user: result, status: AuthenticationStatus.error));
+        } else {
+          emit(state.copyWith(
+              user: result, status: AuthenticationStatus.authentication));
+        }
       }
     }
   }

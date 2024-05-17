@@ -7,12 +7,19 @@ import '../model/user_model.dart';
 
 class AuthenticationRepository {
   FirebaseAuth _firebaseAuth;
-  AuthenticationRepository(this._firebaseAuth);
+  String? platform;
+  AuthenticationRepository(this._firebaseAuth, this.platform);
 
   Stream<UserModel?> get user{
     return _firebaseAuth.authStateChanges().map<UserModel?>((user) {
       return user == null
-          ? null : UserModel(name: user.displayName, uid: user.uid, email: user.email);
+          ? null : UserModel(
+            name: user.displayName,
+            uid: user.uid,
+            email: user.email,
+            adminAccount: false,
+            platform: platform!
+          );
     });
   }
 
@@ -33,6 +40,8 @@ class AuthenticationRepository {
     );
 
     await _firebaseAuth.signInWithCredential(credential);
+    platform = "Google";
+    print("run!");
   }
 
   Future<void> signInWithKakao() async {
@@ -76,5 +85,6 @@ class AuthenticationRepository {
     );
 
     await _firebaseAuth.signInWithCredential(credential);
+    platform = "Kakao";
   }
 }

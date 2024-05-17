@@ -15,6 +15,8 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
       petType: json['petType'] as String?,
       petName: json['petName'] as String?,
       petBirthday: json['petBirthday'] as String?,
+      adminAccount: json['adminAccount'] as bool?,
+      platform: json['platform'] as String?,
     );
 
 Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
@@ -26,4 +28,6 @@ Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'petType': instance.petType,
       'petName': instance.petName,
       'petBirthday': instance.petBirthday,
+      'adminAccount': instance.adminAccount,
+      'platform': instance.platform,
     };
