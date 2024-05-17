@@ -84,7 +84,7 @@ class AuthenticationRepository {
     var credential = provider.credential(
       idToken: token!.idToken,
       // 카카오 로그인에서 발급된 idToken(카카오 설정에서 OpenID Connect가 활성화 되어있어야함)
-      accessToken: token!.accessToken, // 카카오 로그인에서 발급된 accessToken
+      accessToken: token.accessToken, // 카카오 로그인에서 발급된 accessToken
     );
 
     await _firebaseAuth.signInWithCredential(credential);
