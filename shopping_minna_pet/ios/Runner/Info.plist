@@ -65,5 +65,10 @@
 		<false/>
 		<key>UIViewControllerBasedStatusBarAppearance</key>
 		<false/>
+		<key>LSApplicationQueriesSchemes</key>
+          <array>
+              <!-- 카카오톡으로 로그인 -->
+              <string>kakaokompassauth</string>
+          </array>
 	</dict>
 </plist>
