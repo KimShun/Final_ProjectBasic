@@ -17,6 +17,8 @@ class AuthenticationCubit extends HydratedCubit<AuthenticationState> {
     _authenticationRepository.user.listen((user) {
       _userStateChangedEvent(user);
     });
+
+    print(state.status);
   }
 
   void _userStateChangedEvent(UserModel? user) async {
@@ -25,16 +27,22 @@ class AuthenticationCubit extends HydratedCubit<AuthenticationState> {
       emit(state.copyWith(status: AuthenticationStatus.unknown));
     } else {
       // TODO 로그인 상태
-      var result = await _userRepository.findUserOne(user.uid!);
-      var checkRegisterEmail = await _userRepository.findUserOneFromEmail(user.email!);
-      if(checkRegisterEmail == null && result == null) {
-        emit(state.copyWith(user: user, status: AuthenticationStatus.unAuthenticated));
-      } else {
-        if(checkRegisterEmail!.platform != user.platform) {
-          print("!!");
-          emit(state.copyWith(user: checkRegisterEmail, status: AuthenticationStatus.error));
+      if(user.uid != null && user.email != null) {
+        var result = await _userRepository.findUserOne(user.uid!);
+        var checkRegisterEmail = await _userRepository.findUserOneFromEmail(
+            user.email!);
+        if (checkRegisterEmail == null && result == null) {
+          emit(state.copyWith(
+              user: user, status: AuthenticationStatus.unAuthenticated));
         } else {
-          emit(state.copyWith(user: result, status: AuthenticationStatus.authentication));
+          if (checkRegisterEmail?.platform != user.platform) {
+            print("!!");
+            emit(state.copyWith(
+                user: checkRegisterEmail, status: AuthenticationStatus.error));
+          } else {
+            emit(state.copyWith(
+                user: result, status: AuthenticationStatus.authentication));
+          }
         }
       }
     }
@@ -57,6 +65,11 @@ class AuthenticationCubit extends HydratedCubit<AuthenticationState> {
   void logout() async {
     await _authenticationRepository.logout();
     emit(state.copyWith(status: AuthenticationStatus.unknown));
+  }
+
+  Future<String?> findUserName(String uid) async {
+    var result = await _userRepository.findUserOne(uid);
+    return result!.name;
   }
 
   // @override
@@ -123,7 +136,7 @@ class AuthenticationState extends Equatable {
   Map<String, dynamic> toJson() {
     return {
       'status': status.toString(),
-      'user': user!.toMap(),
+      'user': user?.toMap(),
     };
   }
 

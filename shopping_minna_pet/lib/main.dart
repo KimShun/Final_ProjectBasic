@@ -15,12 +15,16 @@ import 'package:shopping_minna_pet/src/common/component/color.dart';
 import 'package:shopping_minna_pet/src/common/cubit/authentication_cubit.dart';
 import 'package:shopping_minna_pet/src/common/cubit/upload_cubit.dart';
 import 'package:shopping_minna_pet/src/common/repository/authentication_repository.dart';
+import 'package:shopping_minna_pet/src/common/repository/post_repository.dart';
 import 'package:shopping_minna_pet/src/common/repository/user_repository.dart';
+import 'package:shopping_minna_pet/src/post/post_cubit.dart';
+import 'package:shopping_minna_pet/src/post/write_post.dart';
 import 'firebase_options.dart';
 
 import 'src/home.dart';
 import 'src/auth/login.dart';
 import 'src/auth/signup.dart';
+import 'src/post/post.dart';
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -67,12 +71,14 @@ class _MyAppState extends State<MyApp> {
       providers: [
         RepositoryProvider(create: (context) => AuthenticationRepository(FirebaseAuth.instance, null, null, null)),
         RepositoryProvider(create: (context) => UserRepository(db)),
+        RepositoryProvider(create: (context) => PostRepository(db)),
       ],
       child: MultiBlocProvider(
         providers: [
           BlocProvider(create: (context) => AuthenticationCubit(context.read<AuthenticationRepository>(), context.read<UserRepository>())),
           BlocProvider(create: (context) => SignUpCubit(context.read<AuthenticationCubit>().state.user!, context.read<UserRepository>())),
           BlocProvider(create: (context) => UploadCubit(storage)),
+          BlocProvider(create: (context) => PostCubit(context.read<AuthenticationCubit>().state.user!, context.read<PostRepository>())),
         ],
         child: MaterialApp.router(
           theme: ThemeData(
@@ -102,6 +108,14 @@ final GoRouter _router = GoRouter(
     GoRoute(
       path: '/signup',
       builder: (context, state) => const SignUpScreen(),
-    )
+    ),
+    GoRoute(
+      path: '/posts',
+      builder: (context, state) => const PostScreen(),
+    ),
+    GoRoute(
+      path: '/writePost',
+      builder: (context, state) => const WritePostScreen(),
+    ),
   ]
 );

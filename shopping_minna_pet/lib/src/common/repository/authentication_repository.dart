@@ -18,9 +18,9 @@ class AuthenticationRepository {
           ? null : UserModel(
             name: user.displayName,
             uid: user.uid,
-            email: platform! == "Google" || platform! == "Apple" ? firebaseEmail! : kakaoUser!.kakaoAccount?.email,
+            email: (platform == "Google" || platform == "Apple") ? firebaseEmail ?? "" : kakaoUser?.kakaoAccount?.email ?? "",
             adminAccount: false,
-            platform: platform!
+            platform: platform
           );
     });
   }
