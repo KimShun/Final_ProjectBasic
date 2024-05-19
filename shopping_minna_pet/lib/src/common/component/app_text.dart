@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 class AppText extends StatelessWidget {
@@ -6,6 +8,8 @@ class AppText extends StatelessWidget {
   final FontWeight? fontWeight;
   final Color? color;
   final TextAlign? textAlign;
+  final TextDecoration? textDecoration;
+  final String? font;
 
   const AppText({
     required this.title,
@@ -13,6 +17,8 @@ class AppText extends StatelessWidget {
     this.fontWeight = FontWeight.bold,
     this.color = Colors.white,
     this.textAlign = TextAlign.start,
+    this.textDecoration = TextDecoration.none,
+    this.font = "Jua",
     super.key});
 
   @override
@@ -20,9 +26,10 @@ class AppText extends StatelessWidget {
     return Text(title,
       style: TextStyle(
         fontWeight: fontWeight,
-        fontFamily: "Jua",
+        fontFamily: font,
         fontSize: fontSize,
         color: color,
+        decoration: textDecoration
       ),
       textAlign: textAlign,
     );
