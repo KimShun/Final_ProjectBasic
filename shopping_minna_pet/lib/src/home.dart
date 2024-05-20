@@ -1,7 +1,9 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:circular_profile_avatar/circular_profile_avatar.dart';
 import 'package:dot_navigation_bar/dot_navigation_bar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shopping_minna_pet/src/common/component/app_text.dart';
@@ -44,8 +46,8 @@ class HomeScreen extends StatelessWidget {
       // 하단 네비게이션 바
       bottomNavigationBar: DotNavigationBar(
         itemPadding: const EdgeInsets.all(14),
-        marginR: const EdgeInsets.symmetric(horizontal: 30, vertical: 0),
-        paddingR: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+        marginR: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+        paddingR: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
         currentIndex: context.select<NavigationCubit, int>((value) => value.state.selectedNum!),
         onTap: (index) {
           context.read<NavigationCubit>().handleIndexChanged(index);
@@ -226,67 +228,67 @@ class _CommunityScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-              padding: const EdgeInsets.symmetric(horizontal: 15.0),
-              width: 200,
-              height: 200,
-              child: Column(
-                children: [
-                  InputDecorator(
-                    decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.fromLTRB(20,62,10,50),
-                      labelText: '  게시판',
-                      labelStyle: const TextStyle(fontWeight:FontWeight.bold,fontSize: 20.0,),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                        borderSide: const BorderSide(color: Colors.brown,width:10 ),
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        TextButton(
-                          onPressed: () {
-                            context.push("/posts");
-                          },
-                          child: const Text(
-                            '최근',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 12.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                        TextButton(
-                          onPressed: () {},
-                          child: const Text(
-                            '베스트',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 12.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ],
+          Expanded(
+            child: Column(
+              children: [
+                InputDecorator(
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.fromLTRB(20,62,10,50),
+                    labelText: '  게시판',
+                    labelStyle: const TextStyle(fontWeight:FontWeight.bold,fontSize: 20.0,),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                      borderSide: const BorderSide(color: Colors.brown,width:10 ),
                     ),
                   ),
-                ],
-              )
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          context.push("/posts");
+                        },
+                        child: const Text(
+                          '최근',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 12.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {},
+                        child: const Text(
+                          '베스트',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 12.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
-          const SizedBox(height: 100),
+          const SizedBox(width: 20.0),
           Container(
-              padding: const EdgeInsets.all(80),
-              decoration: BoxDecoration(
-                color: Colors.amber[200],
-                borderRadius: const BorderRadius.all(Radius.circular(20)),
-              )
+            padding: const EdgeInsets.all(80),
+            decoration: BoxDecoration(
+              color: Colors.amber[200],
+              borderRadius: const BorderRadius.all(Radius.circular(20)),
+            )
           ),
         ]
+      ),
     );
   }
 }
