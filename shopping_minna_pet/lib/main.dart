@@ -13,12 +13,14 @@ import 'package:shopping_minna_pet/src/auth/cubit/signup_cubit.dart';
 import 'package:shopping_minna_pet/src/common/component/api_key.dart';
 import 'package:shopping_minna_pet/src/common/component/color.dart';
 import 'package:shopping_minna_pet/src/common/cubit/authentication_cubit.dart';
+import 'package:shopping_minna_pet/src/common/cubit/navigation_cubit.dart';
 import 'package:shopping_minna_pet/src/common/cubit/upload_cubit.dart';
 import 'package:shopping_minna_pet/src/common/repository/authentication_repository.dart';
 import 'package:shopping_minna_pet/src/common/repository/post_repository.dart';
 import 'package:shopping_minna_pet/src/common/repository/user_repository.dart';
 import 'package:shopping_minna_pet/src/post/post_cubit.dart';
 import 'package:shopping_minna_pet/src/post/write_post.dart';
+import 'package:shopping_minna_pet/src/profile/ProfileScreen.dart';
 import 'firebase_options.dart';
 
 import 'src/home.dart';
@@ -79,6 +81,7 @@ class _MyAppState extends State<MyApp> {
           BlocProvider(create: (context) => SignUpCubit(context.read<AuthenticationCubit>().state.user!, context.read<UserRepository>())),
           BlocProvider(create: (context) => UploadCubit(storage)),
           BlocProvider(create: (context) => PostCubit(context.read<AuthenticationCubit>().state.user!, context.read<PostRepository>())),
+          BlocProvider(create: (context) => NavigationCubit())
         ],
         child: MaterialApp.router(
           theme: ThemeData(
@@ -117,5 +120,9 @@ final GoRouter _router = GoRouter(
       path: '/writePost',
       builder: (context, state) => const WritePostScreen(),
     ),
+    GoRoute(
+      path: '/profile',
+      builder: (context, state) => const ProfileScreen(),
+    )
   ]
 );
