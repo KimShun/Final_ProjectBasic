@@ -55,6 +55,8 @@ dependencies:
   flutter_launcher_icons: ^0.13.1
   flutter_native_splash: ^2.4.0
   uuid: ^4.4.0
+  circular_profile_avatar: ^2.0.5
+  card_swiper: ^3.0.1
 
 dev_dependencies:
   flutter_test:
@@ -82,6 +84,7 @@ flutter:
   assets:
     - assets/img/
     - assets/icon/
+    - assets/app/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
