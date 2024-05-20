@@ -14,6 +14,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "994118575201-b6aladhl3vlr4li2q5rpkgvlh90k8jlc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.shopping_minna_pet",
+            "certificate_hash": "d89514e174c62f0d45bddb69a6cc89e5c6fce601"
+          }
+        },
+        {
+          "client_id": "994118575201-c6j7qrdsi1npp4454q8menf01m69luoe.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.shopping_minna_pet",
+            "certificate_hash": "d851d84a12287602034af50a525d57affe6717da"
+          }
+        },
+        {
           "client_id": "994118575201-3pso9jmghe9gk5g17dso86t6r3ivv888.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,6 +45,13 @@
             {
               "client_id": "994118575201-3pso9jmghe9gk5g17dso86t6r3ivv888.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "994118575201-ub9flgcjop1h8kt3o575toasdsa4g6rg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.shoppingMinnaPet"
+              }
             }
           ]
         }
