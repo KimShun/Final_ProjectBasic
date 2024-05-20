@@ -14,14 +14,6 @@
       },
       "oauth_client": [
         {
-          "client_id": "994118575201-b6aladhl3vlr4li2q5rpkgvlh90k8jlc.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.shopping_minna_pet",
-            "certificate_hash": "d89514e174c62f0d45bddb69a6cc89e5c6fce601"
-          }
-        },
-        {
           "client_id": "994118575201-c6j7qrdsi1npp4454q8menf01m69luoe.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
