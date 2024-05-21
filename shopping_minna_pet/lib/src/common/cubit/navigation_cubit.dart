@@ -8,9 +8,10 @@ class NavigationCubit extends Cubit<NavigationState> {
     emit(state.copyWith(selectedNum: SelectedTab.values.indexOf(state.selectedTab)));
   }
 
-  void handleIndexChanged(int index) {
+  void handleIndexChanged(int index, BuildContext context) {
     emit(state.copyWith(selectedTab: SelectedTab.values[index]));
     emit(state.copyWith(selectedNum: SelectedTab.values.indexOf(state.selectedTab)));
+    changePage(context);
   }
 
   void changePage(BuildContext context) {

@@ -48,8 +48,7 @@ class HomeScreen extends StatelessWidget {
         paddingR: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
         currentIndex: context.select<NavigationCubit, int>((value) => value.state.selectedNum!),
         onTap: (index) {
-          context.read<NavigationCubit>().handleIndexChanged(index);
-          context.read<NavigationCubit>().changePage(context);
+          context.read<NavigationCubit>().handleIndexChanged(index, context);
         },
         // dotIndicatorColor: Colors.black,
         items: [

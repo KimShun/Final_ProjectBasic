@@ -19,7 +19,10 @@ class ProfileScreen extends StatelessWidget {
               child: const Text('Go back to the Home screen'),
             ),
             ElevatedButton(
-              onPressed: () => context.read<AuthenticationCubit>().logout(),
+              onPressed: () {
+                context.read<AuthenticationCubit>().logout();
+                context.go("/login");
+              },
               child: const Text('Logout!'),
             ),
           ],
