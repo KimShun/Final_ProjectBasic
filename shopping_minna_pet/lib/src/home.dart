@@ -1,9 +1,7 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:circular_profile_avatar/circular_profile_avatar.dart';
 import 'package:dot_navigation_bar/dot_navigation_bar.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shopping_minna_pet/src/common/component/app_text.dart';

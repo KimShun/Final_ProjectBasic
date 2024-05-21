@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shopping_minna_pet/src/common/cubit/authentication_cubit.dart';
 
 class ProfileScreen extends StatelessWidget {
   /// Constructs a [DetailsScreen]
@@ -10,9 +12,17 @@ class ProfileScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('Details Screen')),
       body: Center(
-        child: ElevatedButton(
-          onPressed: () => context.go('/'),
-          child: const Text('Go back to the Home screen'),
+        child: Column(
+          children: [
+            ElevatedButton(
+              onPressed: () => context.go('/'),
+              child: const Text('Go back to the Home screen'),
+            ),
+            ElevatedButton(
+              onPressed: () => context.read<AuthenticationCubit>().logout(),
+              child: const Text('Logout!'),
+            ),
+          ],
         ),
       ),
     );
