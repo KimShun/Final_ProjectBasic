@@ -8,6 +8,8 @@ import 'package:shopping_minna_pet/src/common/component/app_text.dart';
 import 'package:shopping_minna_pet/src/common/cubit/authentication_cubit.dart';
 import 'package:shopping_minna_pet/src/common/cubit/navigation_cubit.dart';
 
+List<String> bannerImageList = ["assets/app/event1.jpg", "assets/app/event2.jpg"];
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -98,6 +100,7 @@ class _TopHomeScreen extends StatelessWidget {
         const SizedBox(
           height: 35,
           child: SearchBar(
+            backgroundColor: MaterialStatePropertyAll(Colors.white),
             trailing: [Icon(Icons.search)],
             shadowColor: MaterialStatePropertyAll(Colors.black),
             constraints: BoxConstraints(maxWidth: 180, maxHeight: 200),
@@ -134,14 +137,14 @@ class _HomeEventBanner extends StatelessWidget {
           return ClipRRect(
             borderRadius: BorderRadius.circular(40),
             child: Image.asset(
-              'assets/app/event1.jpg',
+              bannerImageList[index],
               fit: BoxFit.fill,
             ),
           );
         },
         autoplay: true,
         duration: 1000,
-        itemCount: 4,
+        itemCount: bannerImageList.length,
         viewportFraction: 0.9,
         scale: 0.8,
         pagination: const SwiperPagination(),
