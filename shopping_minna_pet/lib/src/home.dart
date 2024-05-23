@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:card_swiper/card_swiper.dart';
 import 'package:circular_profile_avatar/circular_profile_avatar.dart';
 import 'package:dot_navigation_bar/dot_navigation_bar.dart';
