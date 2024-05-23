@@ -25,6 +25,7 @@ class _PostScreenState extends State<PostScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         title: const AppText(
           title: "자유게시판",
           fontSize: 23.0,
@@ -61,7 +62,7 @@ class _PostScreenState extends State<PostScreen> {
                     return const Center(child: CircularProgressIndicator());
                   }
 
-                  else if(state.posts != null) {
+                  else if(state.posts!.items!.isNotEmpty) {
                     return ListView.separated(
                       itemCount: state.posts!.items!.length,
                       separatorBuilder: (context, index) => const Divider(),

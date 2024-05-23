@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shopping_minna_pet/src/auth/cubit/signup_cubit.dart';
+import 'package:shopping_minna_pet/src/common/component/app_loading_circular.dart';
 import 'package:shopping_minna_pet/src/common/component/app_text.dart';
 import 'package:shopping_minna_pet/src/common/cubit/authentication_cubit.dart';
 
@@ -30,7 +31,7 @@ class SignUpScreen extends StatelessWidget {
                 case SignUpStatus.loading:
                   break;
                 case SignUpStatus.uploading:
-                  context.read<UploadCubit>().uploadUserProfile(state.profileFile!, state.userModel!.uid!);
+                  context.read<UploadCubit>().uploadImage(state.profileFile!, state.userModel!.uid!, "users", "profile");
                   break;
                 case SignUpStatus.success:
                   context.read<AuthenticationCubit>().reloadAuth();
@@ -97,14 +98,7 @@ class SignUpScreen extends StatelessWidget {
                           color: Colors.yellow,
                         ),
                         const SizedBox(height: 10.0),
-                        SizedBox(
-                          width: phoneWidth >= 400 ? 35.0 : 30.0,
-                          height: phoneWidth >= 400 ? 35.0 : 30.0,
-                          child: const CircularProgressIndicator(
-                            strokeWidth: 2.0,
-                            color: Colors.yellowAccent,
-                          ),
-                        ),
+                        const AppLoadingCircular(),
                         const SizedBox(height: 10.0),
                         AppText(
                           title: "${state.percent}%",

@@ -54,16 +54,19 @@ class AuthenticationCubit extends HydratedCubit<AuthenticationState> {
 
   void googleLogin() async {
     await _authenticationRepository.signInWithGoogle();
+    await Future.delayed(const Duration(milliseconds: 1000));
     init();
   }
 
   void kakaoLogin() async {
     await _authenticationRepository.signInWithKakao();
+    await Future.delayed(const Duration(milliseconds: 1000));
     init();
   }
 
   void logout() async {
     await _authenticationRepository.logout();
+    await HydratedBloc.storage.clear();
     emit(state.copyWith(status: AuthenticationStatus.unknown));
   }
 
