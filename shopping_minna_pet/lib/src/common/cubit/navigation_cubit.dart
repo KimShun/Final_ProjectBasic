@@ -19,7 +19,7 @@ class NavigationCubit extends Cubit<NavigationState> {
 
   void changePage(BuildContext context) {
     if(state.selectedTab == SelectedTab.home) {
-      context.go("/");
+      context.go("/home");
     }
     else if(state.selectedTab == SelectedTab.profile) {
       context.go("/profile");

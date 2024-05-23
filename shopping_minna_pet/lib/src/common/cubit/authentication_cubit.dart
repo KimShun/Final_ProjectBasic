@@ -17,8 +17,6 @@ class AuthenticationCubit extends HydratedCubit<AuthenticationState> {
     _authenticationRepository.user.listen((user) {
       _userStateChangedEvent(user);
     });
-
-    print(state.status);
   }
 
   void _userStateChangedEvent(UserModel? user) async {
@@ -36,7 +34,6 @@ class AuthenticationCubit extends HydratedCubit<AuthenticationState> {
               user: user, status: AuthenticationStatus.unAuthenticated));
         } else {
           if (checkRegisterEmail?.platform != user.platform) {
-            print("!!");
             emit(state.copyWith(
                 user: checkRegisterEmail, status: AuthenticationStatus.error));
           } else {

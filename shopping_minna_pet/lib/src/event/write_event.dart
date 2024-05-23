@@ -42,8 +42,8 @@ class WriteEventScreen extends StatelessWidget {
                   context.read<UploadCubit>().uploadImage(state.eventImage!, state.uuid!, "events", "event_banner");
                   break;
                 case EventStatus.success:
+                  context.read<EventCubit>().HomeBannerLoad();
                   context.go("/");
-                  context.push("/events");
                   break;
                 case EventStatus.error:
                   break;

@@ -114,37 +114,55 @@ class _HomeEventBanner extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<EventCubit, EventState>(
       builder: (context, state) {
-        if(state.status == EventStatus.loading) {
+        if (state.status == EventStatus.loading) {
           return const Center(child: AppLoadingCircular());
+        }
+
+        if (state.imageBannerList != null && state.imageBannerList!.isNotEmpty) {
+          return GestureDetector(
+            onTap: () {
+              context.push("/events");
+            },
+            child: SizedBox(
+              height: 200,
+              child: Swiper(
+                itemBuilder: (BuildContext context, int index) {
+                  return ClipRRect(
+                    borderRadius: BorderRadius.circular(40),
+                    child: Image.network(
+                      state.imageBannerList![index],
+                      fit: BoxFit.fill,
+                    ),
+                  );
+                },
+                autoplay: true,
+                duration: 1000,
+                itemCount: state.imageBannerList!.length,
+                viewportFraction: 0.9,
+                scale: 0.8,
+                pagination: const SwiperPagination(),
+                control: const SwiperControl(
+                  padding: EdgeInsets.only(left: 7.0),
+                  color: Colors.grey,
+                ),
+              ),
+            ),
+          );
         }
 
         return GestureDetector(
           onTap: () {
             context.push("/events");
           },
-          child: SizedBox(
+          child: const SizedBox(
             height: 200,
-            child: Swiper(
-              itemBuilder: (BuildContext context, int index) {
-                return ClipRRect(
-                  borderRadius: BorderRadius.circular(40),
-                  child: Image.network(
-                    state.imageBannerList![index],
-                    fit: BoxFit.fill,
-                  ),
-                );
-              },
-              autoplay: true,
-              duration: 1000,
-              itemCount: state.imageBannerList!.length,
-              viewportFraction: 0.9,
-              scale: 0.8,
-              pagination: const SwiperPagination(),
-              control: const SwiperControl(
-                padding: EdgeInsets.only(left: 7.0),
-                color: Colors.grey,
-              ),
-            ),
+            child: Center(
+              child: AppText(
+                title: "진행중인 이벤트가 없어요 ㅠㅠ",
+                fontSize: 18.0,
+                color: Colors.black,
+              )
+            )
           ),
         );
       }
