@@ -40,15 +40,11 @@ class _EventPageScreenState extends State<EventPageScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 3.0),
         child: Column(
           children: [
-            Row(
+            const Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                AppText(
-                  title: "${context.select<AuthenticationCubit, String?>((value) => value.state.user!.name)} 님, 환영합니다.",
-                  fontSize: 15.0,
-                  color: Colors.black,
-                ),
-                const _writeButtonShowAndHide()
+                _writeButtonShowAndHide(),
+                SizedBox(width: 10.0)
               ],
             ),
             const SizedBox(height: 10.0),
