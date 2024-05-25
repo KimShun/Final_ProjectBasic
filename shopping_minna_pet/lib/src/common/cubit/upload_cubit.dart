@@ -8,10 +8,10 @@ class UploadCubit extends Cubit<UploadState> {
   FirebaseStorage storage;
   UploadCubit(this.storage) : super(UploadState());
 
-  void uploadUserProfile(File file, String uid) {
+  void uploadImage(File file, String uid, String path, String name) {
     emit(state.copyWith(status: UploadStatus.uploading));
     final storageRef = storage.ref();
-    var uploadTask = storageRef.child("$uid/profile.jpg").putFile(file);
+    var uploadTask = storageRef.child("$path/$uid/$name.jpg").putFile(file);
 
     uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) async {
       switch(taskSnapshot.state) {
@@ -20,7 +20,7 @@ class UploadCubit extends Cubit<UploadState> {
           emit(state.copyWith(percent: progress));
           break;
         case TaskState.success:
-          final ImageUrl = await storageRef.child("$uid/profile.jpg").getDownloadURL();
+          final ImageUrl = await storageRef.child("$path/$uid/$name.jpg").getDownloadURL();
           emit(state.copyWith(url: ImageUrl, status: UploadStatus.success));
           break;
         case TaskState.paused:

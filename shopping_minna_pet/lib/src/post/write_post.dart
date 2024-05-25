@@ -1,21 +1,15 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shopping_minna_pet/src/common/component/app_text.dart';
-import 'package:shopping_minna_pet/src/common/cubit/authentication_cubit.dart';
 import 'package:shopping_minna_pet/src/post/post_cubit.dart';
 import 'package:uuid/uuid.dart';
-
-import '../common/model/user_model.dart';
 
 class WritePostScreen extends StatelessWidget {
   const WritePostScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final UserModel userModel = context.select<AuthenticationCubit, UserModel>((value) => value.state.user!);
-
     return Scaffold(
       appBar: AppBar(
         title: const AppText(
