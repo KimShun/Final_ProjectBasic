@@ -21,6 +21,8 @@ import 'package:shopping_minna_pet/src/common/repository/user_repository.dart';
 import 'package:shopping_minna_pet/src/post/post_cubit.dart';
 import 'package:shopping_minna_pet/src/post/write_post.dart';
 import 'package:shopping_minna_pet/src/profile/ProfileScreen.dart';
+import 'package:shopping_minna_pet/src/sale/SaleScreen.dart';
+import 'package:shopping_minna_pet/src/sale/SaleScreen_detail.dart';
 import 'firebase_options.dart';
 
 import 'src/home.dart';
@@ -123,6 +125,14 @@ final GoRouter _router = GoRouter(
     GoRoute(
       path: '/profile',
       builder: (context, state) => const ProfileScreen(),
+    ),
+    GoRoute(
+      path: '/sale',
+      builder: (context, state) => const SaleScreen(),
+    ),
+    GoRoute(
+      path: '/saledetail',
+      builder: (context, state) => const SaleDetailScreen(),
     )
   ]
 );
