@@ -27,7 +27,6 @@ class _SaleScreenState extends State<SaleScreen> {
 
   String? selectedValue;
 
-
   Widget ImageWithText(String imagePath, String text) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(8.0),
@@ -40,7 +39,6 @@ class _SaleScreenState extends State<SaleScreen> {
             fit: BoxFit.fill,
           ),
           Container(
-
             child: Center(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -57,9 +55,6 @@ class _SaleScreenState extends State<SaleScreen> {
     );
   }
 
-
-
-
   Widget ImageWithText2(String imagePath, String text) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(8.0),
@@ -73,7 +68,6 @@ class _SaleScreenState extends State<SaleScreen> {
           ),
 
           Container(
-
             child: Center(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -82,14 +76,11 @@ class _SaleScreenState extends State<SaleScreen> {
                   fontSize: 19.0,
                   color: Colors.redAccent,
                 ),
-                
               ),
             ),
           ),
-
         ],
       ),
-
     );
   }
 
@@ -98,88 +89,86 @@ class _SaleScreenState extends State<SaleScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: Column(
-            children: [
-              ///
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Icon(Icons.notifications,
-                    color: Colors.brown[400],
-                    size: 40,
-
-                  ),
-                  Image.asset(
-                    "assets/app/logo2.png",
-                    width: 170,
-                    height: 130,
-
-                  ),
-                  Container(
-                      child: Row(
-                          children: [Icon(Icons.search,
-                            color: Colors.black, size: 45,),
-                            Icon(Icons.shopping_cart,
-                              color: Colors.black, size: 45,)
-                          ]))
-
-                ],),
-        Row(
-          //mainAxisAlignment: MainAxisAlignment.start,
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: Column(
           children: [
-          DropdownButton2<String>(
-          isExpanded: true,
-          hint:  Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Expanded(
-                child: AppText(
-                  title: "애완동물",
-                  fontSize: 20.0,
-                  color: Colors.orangeAccent,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Icon(Icons.notifications,
+                  color: Colors.brown[400],
+                  size: 40,
                 ),
-              ),
-            ],
-          ),
-                  items: items
-                      .map((String item) =>
-                      DropdownMenuItem<String>(
-                        value: item,
-                        child: AppText(
-                          title: item,
-                          fontSize: 20.0,
-                          color: Colors.orangeAccent,
-                        ),
-                      ))
-                      .toList(),
-                  value: selectedValue,
-                  onChanged: (String? value) {
-                    setState(() {
-                      selectedValue = value;
-                    });
-                  },
-                  buttonStyleData: ButtonStyleData(
-                    height: 40,
-                    width: 120,
-                    padding: const EdgeInsets.only(left: 14, right: 14),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                          color: Colors.brown[50]!,
-                        //color: Colors.amber[900]!,
+                Image.asset(
+                  "assets/app/logo2.png",
+                  width: 170,
+                  height: 130,
+                ),
+                Container(
+                  child: Row(
+                    children: [
+                      Icon(Icons.search,
+                        color: Colors.black, size: 45,
                       ),
-                      color: Colors.pink[50],
+                      Icon(Icons.shopping_cart,
+                        color: Colors.black, size: 45,
+                      )
+                    ]
+                  )
+                )
+              ]
+            ),
+            Row(
+              //mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                DropdownButton2<String>(
+                isExpanded: true,
+                hint: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: AppText(
+                        title: "애완동물",
+                        fontSize: 20.0,
+                        color: Colors.orangeAccent,
+                      ),
                     ),
-                    elevation: 2,
+                  ],
+                ),
+                items: items.map((String item) => DropdownMenuItem<String>(
+                  value: item,
+                  child: AppText(
+                    title: item,
+                    fontSize: 20.0,
+                    color: Colors.orangeAccent,
+                  ),)).toList(),
+                value: selectedValue,
+                onChanged: (String? value) {
+                  setState(() {
+                    selectedValue = value;
+                  });
+                },
+                buttonStyleData: ButtonStyleData(
+                  height: 40,
+                  width: 120,
+                  padding: const EdgeInsets.only(left: 14, right: 14),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                        color: Colors.brown[50]!,
+                      //color: Colors.amber[900]!,
+                    ),
+                    color: Colors.pink[50],
                   ),
-                  iconStyleData:  IconStyleData(
-                    icon: Icon(
-                      Icons.arrow_drop_down_circle_outlined,
-                    ),
-                    iconSize: 20,
-                    iconEnabledColor: Colors.orangeAccent,
-                    iconDisabledColor: Colors.orangeAccent,
+                  elevation: 2,
+                ),
+                iconStyleData: const IconStyleData(
+                  icon: Icon(
+                    Icons.arrow_drop_down_circle_outlined,
+                  ),
+                  iconSize: 20,
+                  iconEnabledColor: Colors.orangeAccent,
+                  iconDisabledColor: Colors.orangeAccent,
                   ),
                   dropdownStyleData: DropdownStyleData(
                     maxHeight: 150,
@@ -196,138 +185,138 @@ class _SaleScreenState extends State<SaleScreen> {
                       radius: const Radius.circular(10),
                       thickness: MaterialStateProperty.all(6),
                       thumbVisibility: MaterialStateProperty.all(true),
+                      ),
                     ),
-                  ),
-                  menuItemStyleData: const MenuItemStyleData(
-                    height: 50,
-                  ),
+                    menuItemStyleData: const MenuItemStyleData(
+                      height: 50,
+                    ),
                 ),
               ],
             ),
-              const SizedBox(height: 15),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                  child:
-                  Row(children: [
-                    GroupButton(
-                      isRadio: true,
-                      buttons: ["전체", "세일", "의류", "사료", "간식", "장난감","미용", "기타"],
-                      options: GroupButtonOptions(
-                        selectedShadow: const [],
-                        selectedTextStyle: TextStyle(
-                          fontSize: 20,
-                          color: Colors.pink[900],
-                        ),
-                        selectedColor: Colors.pink[100],
-                        unselectedShadow: const [],
-                        unselectedColor: Colors.pink[50],
-                        unselectedTextStyle: TextStyle(
-                          fontSize: 20,
-                          color: Colors.amber[900],
-                        ),
-                        selectedBorderColor: Colors.pink[900],
-                        unselectedBorderColor: Colors.brown[50],
-                        borderRadius: BorderRadius.circular(100),
-                        spacing: 15,
-                        runSpacing: 20,
-                        groupingType: GroupingType.wrap,
-                        direction: Axis.horizontal,
-                        buttonHeight: 40,
-                        buttonWidth: 60,
-                        mainGroupAlignment: MainGroupAlignment.start,
-                        crossGroupAlignment: CrossGroupAlignment.start,
-                        groupRunAlignment: GroupRunAlignment.start,
-                        textAlign: TextAlign.center,
-                        textPadding: EdgeInsets.zero,
-                        alignment: Alignment.center,
-                        elevation: 0,
+            const SizedBox(height: 15),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+                child:
+                Row(children: [
+                  GroupButton(
+                    isRadio: true,
+                    buttons: ["전체", "세일", "의류", "사료", "간식", "장난감","미용", "기타"],
+                    options: GroupButtonOptions(
+                      selectedShadow: const [],
+                      selectedTextStyle: TextStyle(
+                        fontSize: 20,
+                        color: Colors.pink[900],
                       ),
-
-
-                      onSelected: (String value, int index, bool isSelected) =>
-                          print('$value button at index $index is selected: $isSelected'),
-
+                      selectedColor: Colors.pink[100],
+                      unselectedShadow: const [],
+                      unselectedColor: Colors.pink[50],
+                      unselectedTextStyle: TextStyle(
+                        fontSize: 20,
+                        color: Colors.amber[900],
+                      ),
+                      selectedBorderColor: Colors.pink[900],
+                      unselectedBorderColor: Colors.brown[50],
+                      borderRadius: BorderRadius.circular(100),
+                      spacing: 15,
+                      runSpacing: 20,
+                      groupingType: GroupingType.wrap,
+                      direction: Axis.horizontal,
+                      buttonHeight: 40,
+                      buttonWidth: 60,
+                      mainGroupAlignment: MainGroupAlignment.start,
+                      crossGroupAlignment: CrossGroupAlignment.start,
+                      groupRunAlignment: GroupRunAlignment.start,
+                      textAlign: TextAlign.center,
+                      textPadding: EdgeInsets.zero,
+                      alignment: Alignment.center,
+                      elevation: 0,
                     ),
 
 
-                  ])
-              ),
-              const SizedBox(height: 20),
-              Expanded(
-                child: ListView(
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.only(left: 16.0),
-                      child: AppText(
-                        title: "추천",
-                        fontSize: 25.0,
-                        color: Colors.orangeAccent,
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    InkWell(
-                      onTap: () {
-                        context.push('/saledetail');
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          ImageWithText('assets/app/best1.png', ''),
-                          ImageWithText('assets/app/best2.png', ''),
-                          ImageWithText('assets/app/best3.png', ''),
-                        ],
-                      ),
+                    onSelected: (String value, int index, bool isSelected) =>
+                        print('$value button at index $index is selected: $isSelected'),
+
+                  ),
 
 
-                    ),
-
-
-                    const SizedBox(height: 20),
-                    AppText(
-                      title: "선택한 종 / 전체",
+                ])
+            ),
+            const SizedBox(height: 20),
+            Expanded(
+              child: ListView(
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(left: 16.0),
+                    child: AppText(
+                      title: "추천",
                       fontSize: 25.0,
-                      color: Colors.brown[400],
+                      color: Colors.orangeAccent,
                     ),
-                    const SizedBox(height: 20),
-                    Column(
+                  ),
+                  const SizedBox(height: 10),
+                  InkWell(
+                    onTap: () {
+                      context.push('/saledetail');
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        InkWell(
-                          onTap: () {
-                            context.push('/saledetail');
-                          },
-                          child: Column(
-                            children: [Row(
+                        ImageWithText('assets/app/best1.png', ''),
+                        ImageWithText('assets/app/best2.png', ''),
+                        ImageWithText('assets/app/best3.png', ''),
+                      ],
+                    ),
+
+
+                  ),
+
+
+                  const SizedBox(height: 20),
+                  AppText(
+                    title: "선택한 종 / 전체",
+                    fontSize: 25.0,
+                    color: Colors.brown[400],
+                  ),
+                  const SizedBox(height: 20),
+                  Column(
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          context.push('/saledetail');
+                        },
+                        child: Column(
+                          children: [Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              ImageWithText2('assets/app/example.png', '주문제작 가능'),
+
+                              ImageWithText2('assets/app/example2.png', ''),
+
+                            ],
+                          ),
+                            const SizedBox(height: 20),
+                            Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-                                ImageWithText2('assets/app/example.png', '주문제작 가능'),
-
-                                ImageWithText2('assets/app/example2.png', ''),
+                                ImageWithText2('assets/app/example3.png', ''),
+                                ImageWithText2('assets/app/example4.png', '주문제작 가능'),
 
                               ],
-                            ),
-                              const SizedBox(height: 20),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                children: [
-                                  ImageWithText2('assets/app/example3.png', ''),
-                                  ImageWithText2('assets/app/example4.png', '주문제작 가능'),
-
-                                ],
 
 
-                              ),])
+                            ),])
 
 
-                        ),
-                      ],
-                    )
+                      ),
+                    ],
+                  )
 
 
-                  ],
-                ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
+        ),
       ),
 
 
