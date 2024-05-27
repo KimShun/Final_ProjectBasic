@@ -24,8 +24,16 @@ class NavigationCubit extends Cubit<NavigationState> {
     else if(state.selectedTab == SelectedTab.profile) {
       context.go("/profile");
     }
+    else if(state.selectedTab == SelectedTab.pets) {
+      context.go("/sale");
+    }
+    else if(state.selectedTab == SelectedTab.pets) {
+      context.push('/saledetail');
+    }
+
+    }
   }
-}
+
 
 enum SelectedTab {
   pets,

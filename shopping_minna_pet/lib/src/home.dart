@@ -4,11 +4,11 @@ import 'package:dot_navigation_bar/dot_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shopping_minna_pet/src/common/component/app_loading_circular.dart';
 import 'package:shopping_minna_pet/src/common/component/app_text.dart';
 import 'package:shopping_minna_pet/src/common/cubit/authentication_cubit.dart';
 import 'package:shopping_minna_pet/src/common/cubit/navigation_cubit.dart';
-import 'package:shopping_minna_pet/src/event/event_cubit.dart';
+
+List<String> bannerImageList = ["assets/app/event1.jpg", "assets/app/event2.jpg"];
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -21,27 +21,24 @@ class HomeScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: BlocBuilder<AuthenticationCubit, AuthenticationState> (
           builder: (context, state) {
-            return RefreshIndicator(
-              onRefresh: () async {},
-              child: ListView(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // 로고, 검색창, 프로필
-                      _TopHomeScreen(profileImage: state.user!.profile!),
-                      // 이벤트 배너
-                      const _HomeEventBanner(),
-                      const SizedBox(height: 30),
-                      // 인기상품 1~3위
-                      const _TopSellerScreen(),
-                      const SizedBox(height: 30),
-                      ///커뮤니티
-                      const _CommunityScreen()
-                    ]
-                  ),
-                ],
-              ),
+            return ListView(
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // 로고, 검색창, 프로필
+                    _TopHomeScreen(profileImage: state.user!.profile!),
+                    // 이벤트 배너
+                    const _HomeEventBanner(),
+                    const SizedBox(height: 30),
+                    // 인기상품 1~3위
+                    const _TopSellerScreen(),
+                    const SizedBox(height: 30),
+                    ///커뮤니티
+                    const _CommunityScreen()
+                  ]
+                ),
+              ],
             );
           }
         ),
@@ -52,11 +49,32 @@ class HomeScreen extends StatelessWidget {
         marginR: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
         paddingR: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
         currentIndex: context.select<NavigationCubit, int>((value) => value.state.selectedNum!),
-        // dotIndicatorColor: Colors.black,
         onTap: (index) {
           context.read<NavigationCubit>().handleIndexChanged(index, context);
         },
-        items: context.select<NavigationCubit, List<DotNavigationBarItem>>((value) => value.state.navigationItems!),
+        // dotIndicatorColor: Colors.black,
+        items: [
+          DotNavigationBarItem(
+            icon: const Icon(Icons.pets),
+            selectedColor: Colors.brown,
+          ),
+          DotNavigationBarItem(
+            icon: const Icon(Icons.search),
+            selectedColor: Colors.orange,
+          ),
+          DotNavigationBarItem(
+            icon: const Icon(Icons.home),
+            selectedColor: Colors.purple,
+          ),
+          DotNavigationBarItem(
+            icon: const Icon(Icons.shopping_cart),
+            selectedColor: Colors.black12,
+          ),
+          DotNavigationBarItem(
+            icon: const Icon(Icons.person),
+            selectedColor: Colors.teal,
+          ),
+        ],
       ),
     );
   }
@@ -112,60 +130,29 @@ class _HomeEventBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<EventCubit, EventState>(
-      builder: (context, state) {
-        if (state.status == EventStatus.loading) {
-          return const Center(child: AppLoadingCircular());
-        }
-
-        if (state.imageBannerList != null && state.imageBannerList!.isNotEmpty) {
-          return GestureDetector(
-            onTap: () {
-              context.push("/events");
-            },
-            child: SizedBox(
-              height: 200,
-              child: Swiper(
-                itemBuilder: (BuildContext context, int index) {
-                  return ClipRRect(
-                    borderRadius: BorderRadius.circular(40),
-                    child: Image.network(
-                      state.imageBannerList![index],
-                      fit: BoxFit.fill,
-                    ),
-                  );
-                },
-                autoplay: true,
-                duration: 1000,
-                itemCount: state.imageBannerList!.length,
-                viewportFraction: 0.9,
-                scale: 0.8,
-                pagination: const SwiperPagination(),
-                control: const SwiperControl(
-                  padding: EdgeInsets.only(left: 7.0),
-                  color: Colors.grey,
-                ),
-              ),
+    return SizedBox(
+      height: 200,
+      child: Swiper(
+        itemBuilder: (BuildContext context, int index) {
+          return ClipRRect(
+            borderRadius: BorderRadius.circular(40),
+            child: Image.asset(
+              bannerImageList[index],
+              fit: BoxFit.fill,
             ),
           );
-        }
-
-        return GestureDetector(
-          onTap: () {
-            context.push("/events");
-          },
-          child: const SizedBox(
-            height: 200,
-            child: Center(
-              child: AppText(
-                title: "진행중인 이벤트가 없어요 ㅠㅠ",
-                fontSize: 18.0,
-                color: Colors.black,
-              )
-            )
-          ),
-        );
-      }
+        },
+        autoplay: true,
+        duration: 1000,
+        itemCount: bannerImageList.length,
+        viewportFraction: 0.9,
+        scale: 0.8,
+        pagination: const SwiperPagination(),
+        control: const SwiperControl(
+          padding: EdgeInsets.only(left: 7.0),
+          color: Colors.grey,
+        ),
+      ),
     );
   }
 }
