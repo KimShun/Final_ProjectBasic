@@ -105,7 +105,8 @@ class _SaleScreenState extends State<SaleScreen> {
           ),
           Icon(Icons.shopping_cart,
             color: Colors.black, size: 45,
-          )
+          ),
+          SizedBox(width: 10.0),
         ],
       ),
       body: Padding(
