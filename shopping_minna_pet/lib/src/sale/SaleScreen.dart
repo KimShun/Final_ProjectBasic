@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:dot_navigation_bar/dot_navigation_bar.dart';
 import 'package:shopping_minna_pet/src/common/cubit/navigation_cubit.dart';
-import 'package:shopping_minna_pet/src/common/cubit/authentication_cubit.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:group_button/group_button.dart';
 import 'package:shopping_minna_pet/src/common/component/app_text.dart';
