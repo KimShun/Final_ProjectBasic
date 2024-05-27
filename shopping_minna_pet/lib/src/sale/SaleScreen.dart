@@ -88,36 +88,30 @@ class _SaleScreenState extends State<SaleScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: Icon(Icons.notifications,
+          color: Colors.brown[400],
+          size: 40,
+        ),
+        title: Image.asset(
+          "assets/app/logo2.png",
+          width: 170,
+          height: 130,
+        ),
+        centerTitle: true,
+        actions: const [
+          Icon(Icons.search,
+            color: Colors.black, size: 45,
+          ),
+          Icon(Icons.shopping_cart,
+            color: Colors.black, size: 45,
+          )
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Icon(Icons.notifications,
-                  color: Colors.brown[400],
-                  size: 40,
-                ),
-                Image.asset(
-                  "assets/app/logo2.png",
-                  width: 170,
-                  height: 130,
-                ),
-                Container(
-                  child: Row(
-                    children: [
-                      Icon(Icons.search,
-                        color: Colors.black, size: 45,
-                      ),
-                      Icon(Icons.shopping_cart,
-                        color: Colors.black, size: 45,
-                      )
-                    ]
-                  )
-                )
-              ]
-            ),
             Row(
               //mainAxisAlignment: MainAxisAlignment.start,
               children: [
