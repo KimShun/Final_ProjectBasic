@@ -332,7 +332,7 @@ class _SaleScreenState extends State<SaleScreen> {
             selectedColor: Colors.brown,
           ),
           DotNavigationBarItem(
-            icon: const Icon(Icons.search),
+            icon: const Icon(Icons.emoji_events),
             selectedColor: Colors.orange,
           ),
           DotNavigationBarItem(

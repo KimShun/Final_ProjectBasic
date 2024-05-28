@@ -167,7 +167,7 @@ class _SaleDetailScreenState extends State<SaleDetailScreen> {
               width: 280.0,
               child: ElevatedButton(
                 onPressed: () {
-                  // 로그인 버튼 클릭 시 동작을 여기에 추가합니다.
+
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color.fromARGB(255, 3, 199, 90),
