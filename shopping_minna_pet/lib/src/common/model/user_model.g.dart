@@ -17,6 +17,12 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
       petBirthday: json['petBirthday'] as String?,
       adminAccount: json['adminAccount'] as bool?,
       platform: json['platform'] as String?,
+      writePosts: (json['writePosts'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+      likeUuids: (json['likeUuids'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
     );
 
 Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
@@ -30,4 +36,6 @@ Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'petBirthday': instance.petBirthday,
       'adminAccount': instance.adminAccount,
       'platform': instance.platform,
+      'writePosts': instance.writePosts,
+      'likeUuids': instance.likeUuids,
     };

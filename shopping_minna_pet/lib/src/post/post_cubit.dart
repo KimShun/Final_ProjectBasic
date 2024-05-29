@@ -9,12 +9,17 @@ import '../common/model/user_model.dart';
 import '../common/repository/post_repository.dart';
 
 class PostCubit extends Cubit<PostState> {
+  final UserModel userModel;
   final PostRepository _postRepository;
-  PostCubit(UserModel userModel, this._postRepository) : super(PostState(writerUid: userModel.uid));
+  PostCubit(this.userModel, this._postRepository) : super(PostState(writerUid: userModel.uid));
 
   void init() {
     emit(state.copyWith(posts: PostModelResult.init()));
     loadPosts(10, true);
+  }
+
+  void reset() {
+    emit(state.copyWith(title: null, content: null, imageFiles: []));
   }
 
   void loadPosts(int limit, bool isInit) async {
@@ -40,22 +45,40 @@ class PostCubit extends Cubit<PostState> {
     emit(state.copyWith(content: content));
   }
 
+  void uploadPercent(String percent) {
+    emit(state.copyWith(percent: percent));
+  }
+
   void changePostImage(XFile? imageFile) {
     if(imageFile == null) { return; }
 
     var file = File(imageFile.path);
-    emit(state.copyWith(imageFile: file));
+    var updatedImageFiles = List<File>.from(state.imageFiles)..add(file);
+    emit(state.copyWith(imageFiles: updatedImageFiles));
+  }
+
+  void deletePostImage(int index) {
+    var updatedImageFiles = List<File>.from(state.imageFiles)..removeAt(index);
+    emit(state.copyWith(imageFiles: updatedImageFiles));
   }
 
   void changeDate() {
     emit(state.copyWith(date: DateTime.now()));
   }
 
+  void updateImagesPost(List<String> urls) {
+    emit(state.copyWith(postModel: state.postModel!.copyWith(images: urls), status: PostStatus.loading));
+    submit();
+  }
+
   void save() {
     if(state.title == null || state.title == "" || state.content == null || state.content == "") return;
     emit(state.copyWith(status: PostStatus.loading));
 
-    if(state.imageFile != null) {
+    PostModel newPost = PostModel(title: state.title, writerUid: state.writerUid, content: state.content, date: state.date, uuid: state.uuid, images: []);
+    emit(state.copyWith(postModel: newPost));
+
+    if(state.imageFiles.isNotEmpty) {
       emit(state.copyWith(status: PostStatus.uploading));
     } else {
       submit();
@@ -63,9 +86,6 @@ class PostCubit extends Cubit<PostState> {
   }
 
   void submit() async {
-    PostModel newPost = PostModel(title: state.title, writerUid: state.writerUid, content: state.content, date: state.date, uuid: state.uuid);
-
-    emit(state.copyWith(postModel: newPost));
     var result = await _postRepository.createPost(state.postModel!);
 
     if(result) {
@@ -88,50 +108,54 @@ class PostState extends Equatable {
   final String? uuid;
   final String? title;
   final String? content;
-  final File? imageFile;
+  final List<File> imageFiles;
   final DateTime? date;
   final PostModel? postModel;
   final PostModelResult? posts;
   final PostStatus status;
   final String? writerUid;
+  final String? percent;
 
   const PostState({
     this.uuid,
     this.title,
     this.content,
-    this.imageFile,
+    this.imageFiles = const [],
     this.date,
     this.postModel,
     this.posts,
     this.status = PostStatus.init,
     this.writerUid,
+    this.percent,
   });
 
   PostState copyWith({
     String? uuid,
     String? title,
     String? content,
-    File? imageFile,
+    List<File>? imageFiles,
     DateTime? date,
     PostModel? postModel,
     PostModelResult? posts,
     String? writerUid,
     PostStatus? status,
+    String? percent
   }) {
     return PostState(
       uuid: uuid ?? this.uuid,
       title: title ?? this.title,
       content: content ?? this.content,
-      imageFile: imageFile ?? this.imageFile,
+      imageFiles: imageFiles ?? this.imageFiles,
       date: date ?? this.date,
       postModel: postModel ?? this.postModel,
       posts: posts ?? this.posts,
       writerUid: writerUid ?? this.writerUid,
       status: status ?? this.status,
+      percent: percent ?? this.percent,
     );
   }
 
   @override
   // TODO: implement props
-  List<Object?> get props => [uuid, title, content, imageFile, date, postModel, posts, writerUid, status];
+  List<Object?> get props => [uuid, title, content, imageFiles, date, postModel, posts, writerUid, status, percent];
 }
