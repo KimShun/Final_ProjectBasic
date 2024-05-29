@@ -116,7 +116,7 @@ class _EventImageBanner extends StatelessWidget {
             height: 200,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(40),
-              child: bannerImage == null ? Container(color: Colors.grey)
+              child: bannerImage == null ? Container(color: Colors.grey, child: const Center(child: Icon(Icons.add, size: 30.0,)))
                   : Image.file(bannerImage, fit: BoxFit.fill,)
             ),
           ),

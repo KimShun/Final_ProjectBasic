@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -48,6 +50,7 @@ class _PostScreenState extends State<PostScreen> {
                 ),
                 TextButton(
                   onPressed: () {
+                    context.read<PostCubit>().reset();
                     context.push("/writePost");
                   },
                   child: const AppText(title: "[글쓰기] 클릭!", fontSize: 14.0, color: Colors.red,)
@@ -69,33 +72,39 @@ class _PostScreenState extends State<PostScreen> {
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              AppText(
-                                title: "${state.posts!.items![index].title}",
-                                fontSize: 15.0,
-                                color: Colors.black,
-                              ),
-                              FutureBuilder<String?>(
-                                future: context.read<AuthenticationCubit>().findUserName(state.posts!.items![index].writerUid!),
-                                builder: (context, snapshot) {
-                                  if(snapshot.hasData) {
-                                    return AppText(
-                                      title: "${state.posts!.items![index].date!.year}-${state.posts!.items![index].date!.month}-${state.posts!.items![index].date!.day} "
-                                          "/ ${snapshot.data}",
-                                      fontSize: 12.0,
-                                      color: Colors.grey,
-                                    );
-                                  }
+                              Column (
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  AppText(
+                                    title: "${state.posts!.items![index].title}",
+                                    fontSize: 15.0,
+                                    color: Colors.black,
+                                  ),
+                                  FutureBuilder<String?>(
+                                    future: context.read<AuthenticationCubit>().findUserName(state.posts!.items![index].writerUid!),
+                                    builder: (context, snapshot) {
+                                      if(snapshot.hasData) {
+                                        return AppText(
+                                          title: "${state.posts!.items![index].date!.year}-${state.posts!.items![index].date!.month}-${state.posts!.items![index].date!.day} "
+                                              "/ ${snapshot.data}",
+                                          fontSize: 12.0,
+                                          color: Colors.grey,
+                                        );
+                                      }
 
-                                  return const AppText(
-                                    title: "알수없음",
-                                    fontSize: 12.0,
-                                    color: Colors.grey,
-                                  );
-                                },
+                                      return const AppText(
+                                        title: "알수없음",
+                                        fontSize: 12.0,
+                                        color: Colors.grey,
+                                      );
+                                    },
+                                  ),
+                                ],
                               ),
+                              _showPostImage(images: state.posts!.items![index].images!)
                             ],
                           ),
                         );
@@ -124,5 +133,29 @@ class _PostScreenState extends State<PostScreen> {
         ),
       ),
     );
+  }
+}
+
+class _showPostImage extends StatelessWidget {
+  final List<String> images;
+
+  const _showPostImage({
+    required this.images,
+    super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    if(images.isEmpty) {
+      return Container();
+    } else {
+      return SizedBox(
+        width: 55,
+        height: 55,
+        child: ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: Image.network(images[0], fit: BoxFit.fill)
+        ),
+      );
+    }
   }
 }

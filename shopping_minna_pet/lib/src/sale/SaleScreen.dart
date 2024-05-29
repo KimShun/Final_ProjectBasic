@@ -118,7 +118,7 @@ class _SaleScreenState extends State<SaleScreen> {
               children: [
                 DropdownButton2<String>(
                 isExpanded: true,
-                hint: Row(
+                hint: const Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Expanded(
@@ -226,15 +226,11 @@ class _SaleScreenState extends State<SaleScreen> {
                       alignment: Alignment.center,
                       elevation: 0,
                     ),
-
-
                     onSelected: (String value, int index, bool isSelected) =>
                         print('$value button at index $index is selected: $isSelected'),
-
                   ),
-
-
-                ])
+                ]
+              )
             ),
             const SizedBox(height: 20),
             Expanded(
@@ -261,11 +257,7 @@ class _SaleScreenState extends State<SaleScreen> {
                         ImageWithText('assets/app/best3.png', ''),
                       ],
                     ),
-
-
                   ),
-
-
                   const SizedBox(height: 20),
                   AppText(
                     title: "선택한 종 / 전체",
@@ -284,9 +276,7 @@ class _SaleScreenState extends State<SaleScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               ImageWithText2('assets/app/example.png', '주문제작 가능'),
-
                               ImageWithText2('assets/app/example2.png', ''),
-
                             ],
                           ),
                             const SizedBox(height: 20),
@@ -295,26 +285,19 @@ class _SaleScreenState extends State<SaleScreen> {
                               children: [
                                 ImageWithText2('assets/app/example3.png', ''),
                                 ImageWithText2('assets/app/example4.png', '주문제작 가능'),
-
                               ],
-
-
-                            ),])
-
-
+                            ),
+                          ]
+                        )
                       ),
                     ],
                   )
-
-
                 ],
               ),
             ),
           ],
         ),
       ),
-
-
       // 하단 네비게이션 바
       bottomNavigationBar: DotNavigationBar(
         itemPadding: const EdgeInsets.all(14),

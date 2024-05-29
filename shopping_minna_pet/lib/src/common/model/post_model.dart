@@ -27,7 +27,7 @@ class PostModelResult extends Equatable {
 class PostModel extends Equatable {
   final String? uuid;
   final String? writerUid;
-  final String? images;
+  final List<String>? images;
   final String? title;
   final String? content;
   final DateTime? date;
@@ -46,8 +46,7 @@ class PostModel extends Equatable {
 
   PostModel copyWith({
     String? uuid,
-    UserModel? userModel,
-    String? images,
+    List<String>? images,
     String? title,
     String? content,
     DateTime? date,
