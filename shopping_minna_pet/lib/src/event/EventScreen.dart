@@ -15,7 +15,7 @@ class EventScreen extends StatefulWidget {
 }
 
 
-Widget ImageWithText(String imagePath, String text) {
+Widget ImageWithText(String imagePath, String text,BuildContext context) {
   return ClipRRect(
     borderRadius: BorderRadius.circular(8.0),
     child: Stack(
@@ -33,6 +33,9 @@ Widget ImageWithText(String imagePath, String text) {
               padding: const EdgeInsets.fromLTRB(220, 160, 0, 0),
               child: ElevatedButton(
                   onPressed: () {
+                    if(text =='신청하기' ||text=='투표하기'|| text=='결과확인'){
+                      context.push('/eventdetail');
+                    }
 
                   },
                   style: ElevatedButton.styleFrom(
@@ -73,13 +76,13 @@ class _EventScreenState extends State<EventScreen> {
           Expanded(
           child: ListView(
             children: [
-              ImageWithText('assets/app/event1.jpg', ' 투표하기'),
+              ImageWithText('assets/app/event1.jpg', '투표하기',context),
               const SizedBox(height: 20,),
-              ImageWithText('assets/app/event2.jpg', '투표하기'),
+              ImageWithText('assets/app/event2.jpg', '투표하기',context),
               const SizedBox(height: 20,),
-              ImageWithText('assets/app/event1.jpg','신청하기'),
+              ImageWithText('assets/app/event1.jpg','신청하기',context),
               const SizedBox(height: 20,),
-              ImageWithText('assets/app/event2.jpg', '결과확인'),
+              ImageWithText('assets/app/event2.jpg', '결과확인',context),
 
             ],
 
