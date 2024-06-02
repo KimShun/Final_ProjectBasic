@@ -9,7 +9,8 @@ part of 'post_model.dart';
 PostModel _$PostModelFromJson(Map<String, dynamic> json) => PostModel(
       uuid: json['uuid'] as String?,
       writerUid: json['writerUid'] as String?,
-      images: json['images'] as String?,
+      images:
+          (json['images'] as List<dynamic>?)?.map((e) => e as String).toList(),
       title: json['title'] as String?,
       content: json['content'] as String?,
       date:

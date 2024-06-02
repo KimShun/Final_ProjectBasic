@@ -16,8 +16,12 @@ import 'package:shopping_minna_pet/src/common/cubit/authentication_cubit.dart';
 import 'package:shopping_minna_pet/src/common/cubit/navigation_cubit.dart';
 import 'package:shopping_minna_pet/src/common/cubit/upload_cubit.dart';
 import 'package:shopping_minna_pet/src/common/repository/authentication_repository.dart';
+import 'package:shopping_minna_pet/src/common/repository/event_repository.dart';
 import 'package:shopping_minna_pet/src/common/repository/post_repository.dart';
 import 'package:shopping_minna_pet/src/common/repository/user_repository.dart';
+import 'package:shopping_minna_pet/src/event/event.dart';
+import 'package:shopping_minna_pet/src/event/event_cubit.dart';
+import 'package:shopping_minna_pet/src/event/write_event.dart';
 import 'package:shopping_minna_pet/src/event/EventScreen_detail.dart';
 import 'package:shopping_minna_pet/src/post/post_cubit.dart';
 import 'package:shopping_minna_pet/src/post/write_post.dart';
@@ -79,6 +83,7 @@ class _MyAppState extends State<MyApp> {
         RepositoryProvider(create: (context) => AuthenticationRepository(FirebaseAuth.instance, null, null, null)),
         RepositoryProvider(create: (context) => UserRepository(db)),
         RepositoryProvider(create: (context) => PostRepository(db)),
+        RepositoryProvider(create: (context) => EventRepository(db))
       ],
       child: MultiBlocProvider(
         providers: [
@@ -86,7 +91,8 @@ class _MyAppState extends State<MyApp> {
           BlocProvider(create: (context) => SignUpCubit(context.read<AuthenticationCubit>().state.user!, context.read<UserRepository>())),
           BlocProvider(create: (context) => UploadCubit(storage)),
           BlocProvider(create: (context) => PostCubit(context.read<AuthenticationCubit>().state.user!, context.read<PostRepository>())),
-          BlocProvider(create: (context) => NavigationCubit())
+          BlocProvider(create: (context) => NavigationCubit()),
+          BlocProvider(create: (context) => EventCubit(context.read<EventRepository>()))
         ],
         child: MaterialApp.router(
           theme: ThemeData(
@@ -128,6 +134,14 @@ final GoRouter _router = GoRouter(
     GoRoute(
       path: '/profile',
       builder: (context, state) => const ProfileScreen(),
+    ),
+    GoRoute(
+      path: '/events',
+      builder: (context, state) => const EventPageScreen(),
+    ),
+    GoRoute(
+      path: '/writeEvent',
+      builder: (context, state) => const WriteEventScreen(),
     ),
     GoRoute(
       path: '/sale',

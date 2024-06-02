@@ -14,6 +14,7 @@ class AuthenticationCubit extends HydratedCubit<AuthenticationState> {
 
   void init() {
     // _authenticationRepository.logout();
+    // logout();
     _authenticationRepository.user.listen((user) {
       _userStateChangedEvent(user);
     });
