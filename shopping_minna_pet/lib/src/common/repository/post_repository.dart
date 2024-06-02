@@ -10,20 +10,31 @@ class PostRepository {
 
   Future<bool> createPost(PostModel postModel) async {
     try {
-      db.collection("posts").add(postModel.toJson());
+      var doc = await db.collection("posts").where("uuid", isEqualTo: postModel.uuid).get();
+      if(doc.docs.isEmpty) {
+        db.collection("posts").add(postModel.toJson());
+      } else {
+        db.collection("posts").doc(doc.docs.first.id).update(postModel.toJson());
+      }
       return true;
     } catch(e) {
       return false;
     }
   }
 
-  Future<List<PostModel>?> loadPosts(int limit, bool isInit) async {
+  Future<List<PostModel>?> loadPosts(int limit, bool isInit, String? uid) async {
+    late Query query;
+
     if(isInit) {
       lastDocument = null;
     }
 
     try {
-      Query query = db.collection("posts").orderBy("date", descending: true).limit(limit);
+      if(uid == null) {
+        query = db.collection("posts").orderBy("date", descending: true).limit(limit);
+      } else {
+        query = db.collection("posts").orderBy("date", descending: true).where("writerUid", isEqualTo: uid).limit(limit);
+      }
 
       if(lastDocument != null) {
         query = query.startAfterDocument(lastDocument!);
@@ -54,6 +65,18 @@ class PostRepository {
       }
     } catch(e) {
       return null;
+    }
+  }
+
+  Future<bool> deletePosts(String uuid) async {
+    try {
+      var doc = await db.collection("posts").where("uuid", isEqualTo: uuid).get();
+      if(doc.docs.isNotEmpty) {
+        db.collection("posts").doc(doc.docs.first.id).delete();
+        return true;
+      } else { return false; }
+    } catch(e) {
+      return false;
     }
   }
 }

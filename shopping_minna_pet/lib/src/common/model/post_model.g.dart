@@ -15,6 +15,7 @@ PostModel _$PostModelFromJson(Map<String, dynamic> json) => PostModel(
       content: json['content'] as String?,
       date:
           json['date'] == null ? null : DateTime.parse(json['date'] as String),
+      likeCount: (json['likeCount'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$PostModelToJson(PostModel instance) => <String, dynamic>{
@@ -24,4 +25,5 @@ Map<String, dynamic> _$PostModelToJson(PostModel instance) => <String, dynamic>{
       'title': instance.title,
       'content': instance.content,
       'date': instance.date?.toIso8601String(),
+      'likeCount': instance.likeCount,
     };

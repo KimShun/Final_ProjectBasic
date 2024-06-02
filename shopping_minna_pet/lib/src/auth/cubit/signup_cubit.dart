@@ -58,7 +58,16 @@ class SignUpCubit extends Cubit<SignUpState> {
   }
 
   void submit() async {
-    var joinUserModel = state.userModel!.copyWith(name: state.name, discription: state.discription, petName: state.petName, petType: state.petType, petBirthday: state.petBirthday);
+    var joinUserModel = state.userModel!.copyWith(
+      name: state.name,
+      discription: state.discription,
+      petName: state.petName,
+      petType: state.petType,
+      petBirthday: state.petBirthday,
+      likePosts: [],
+      point: 0,
+      coupons: []
+    );
     var result = await _userRepository.joinUser(joinUserModel);
 
     if(result) {

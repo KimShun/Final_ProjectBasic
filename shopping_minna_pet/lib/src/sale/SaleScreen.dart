@@ -6,26 +6,12 @@ import 'package:shopping_minna_pet/src/common/cubit/navigation_cubit.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:group_button/group_button.dart';
 import 'package:shopping_minna_pet/src/common/component/app_text.dart';
+import 'package:shopping_minna_pet/src/sale/cubit/sale_drop_and_group_cubit.dart';
 
-class SaleScreen extends StatefulWidget {
+import '../common/component/app_dot_navigation_bar.dart';
 
+class SaleScreen extends StatelessWidget {
   const SaleScreen({Key? key}) : super(key: key);
-  @override
-  _SaleScreenState createState() => _SaleScreenState();
-}
-
-class _SaleScreenState extends State<SaleScreen> {
-  final List<String> items = [
-    '강아지',
-    '고양이',
-    '토끼',
-    '기니피그',
-    '도마뱀',
-    '기타',
-
-  ];
-
-  String? selectedValue;
 
   Widget ImageWithText(String imagePath, String text) {
     return ClipRRect(
@@ -38,7 +24,7 @@ class _SaleScreenState extends State<SaleScreen> {
             height: 100,
             fit: BoxFit.fill,
           ),
-          Container(
+          SizedBox(
             child: Center(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -84,7 +70,6 @@ class _SaleScreenState extends State<SaleScreen> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -109,6 +94,7 @@ class _SaleScreenState extends State<SaleScreen> {
           SizedBox(width: 10.0),
         ],
       ),
+      extendBody: true,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: Column(
@@ -125,23 +111,21 @@ class _SaleScreenState extends State<SaleScreen> {
                       child: AppText(
                         title: "애완동물",
                         fontSize: 20.0,
-                        color: Colors.orangeAccent,
+                        color: Colors.grey,
                       ),
                     ),
                   ],
                 ),
-                items: items.map((String item) => DropdownMenuItem<String>(
+                items: context.select<SaleDropGroupCubit, List<String>>((value) => value.state.dropItems!).map((String item) => DropdownMenuItem<String>(
                   value: item,
                   child: AppText(
                     title: item,
                     fontSize: 20.0,
                     color: Colors.orangeAccent,
                   ),)).toList(),
-                value: selectedValue,
+                value: context.select<SaleDropGroupCubit, String?>((value) => value.state.dropSelected),
                 onChanged: (String? value) {
-                  setState(() {
-                    selectedValue = value;
-                  });
+                  context.read<SaleDropGroupCubit>().changeDropSelected(value);
                 },
                 buttonStyleData: ButtonStyleData(
                   height: 40,
@@ -195,7 +179,7 @@ class _SaleScreenState extends State<SaleScreen> {
                 Row(children: [
                   GroupButton(
                     isRadio: true,
-                    buttons: ["전체", "세일", "의류", "사료", "간식", "장난감","미용", "기타"],
+                    buttons: context.select<SaleDropGroupCubit, List<String>>((value) => value.state.groupItems!),
                     options: GroupButtonOptions(
                       selectedShadow: const [],
                       selectedTextStyle: TextStyle(
@@ -226,8 +210,9 @@ class _SaleScreenState extends State<SaleScreen> {
                       alignment: Alignment.center,
                       elevation: 0,
                     ),
-                    onSelected: (String value, int index, bool isSelected) =>
-                        print('$value button at index $index is selected: $isSelected'),
+                    onSelected: (String value, int index, bool isSelected) {
+                      // context.read<SaleDropGroupCubit>().changeGroupSelected(index);
+                    }
                   ),
                 ]
               )
@@ -299,39 +284,7 @@ class _SaleScreenState extends State<SaleScreen> {
         ),
       ),
       // 하단 네비게이션 바
-      bottomNavigationBar: DotNavigationBar(
-        itemPadding: const EdgeInsets.all(14),
-        marginR: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
-        paddingR: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-        currentIndex: context.select<NavigationCubit, int>((value) =>
-        value.state.selectedNum!),
-        onTap: (index) {
-          context.read<NavigationCubit>().handleIndexChanged(index, context);
-        },
-        // dotIndicatorColor: Colors.black,
-        items: [
-          DotNavigationBarItem(
-            icon: const Icon(Icons.pets),
-            selectedColor: Colors.brown,
-          ),
-          DotNavigationBarItem(
-            icon: const Icon(Icons.emoji_events),
-            selectedColor: Colors.orange,
-          ),
-          DotNavigationBarItem(
-            icon: const Icon(Icons.home),
-            selectedColor: Colors.purple,
-          ),
-          DotNavigationBarItem(
-            icon: const Icon(Icons.shopping_cart),
-            selectedColor: Colors.black12,
-          ),
-          DotNavigationBarItem(
-            icon: const Icon(Icons.person),
-            selectedColor: Colors.teal,
-          ),
-        ],
-      ),
+      bottomNavigationBar: const AppDotNavgationBar(),
     );
   }
 }

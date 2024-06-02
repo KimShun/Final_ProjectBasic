@@ -14,17 +14,17 @@ class PostCubit extends Cubit<PostState> {
   PostCubit(this.userModel, this._postRepository) : super(PostState(writerUid: userModel.uid));
 
   void init() {
-    emit(state.copyWith(posts: PostModelResult.init()));
-    loadPosts(10, true);
+    emit(state.copyWith(posts: PostModelResult.init(), status: PostStatus.init));
+    loadPosts(10, true, null);
   }
 
   void reset() {
     emit(state.copyWith(title: null, content: null, imageFiles: []));
   }
 
-  void loadPosts(int limit, bool isInit) async {
+  void loadPosts(int limit, bool isInit, String? uid) async {
     emit(state.copyWith(status: PostStatus.loading));
-    List<PostModel>? postModels = await _postRepository.loadPosts(limit, isInit);
+    List<PostModel>? postModels = await _postRepository.loadPosts(limit, isInit, uid);
 
     if(postModels != null) {
       emit(state.copyWith(posts: state.posts!.copyWithFromList(postModels), status: PostStatus.success));
@@ -75,7 +75,7 @@ class PostCubit extends Cubit<PostState> {
     if(state.title == null || state.title == "" || state.content == null || state.content == "") return;
     emit(state.copyWith(status: PostStatus.loading));
 
-    PostModel newPost = PostModel(title: state.title, writerUid: state.writerUid, content: state.content, date: state.date, uuid: state.uuid, images: []);
+    PostModel newPost = PostModel(title: state.title, writerUid: state.writerUid, content: state.content, date: state.date, uuid: state.uuid, images: [], likeCount: 0);
     emit(state.copyWith(postModel: newPost));
 
     if(state.imageFiles.isNotEmpty) {

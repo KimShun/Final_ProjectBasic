@@ -22,7 +22,7 @@ class NavigationCubit extends Cubit<NavigationState> {
       context.go("/");
     }
     else if(state.selectedTab == SelectedTab.profile) {
-      context.go("/profile");
+      context.push("/profile");
     }
     else if(state.selectedTab == SelectedTab.pets) {
       context.go("/sale");

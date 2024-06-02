@@ -9,6 +9,7 @@ import 'package:shopping_minna_pet/src/common/cubit/authentication_cubit.dart';
 import 'package:shopping_minna_pet/src/common/cubit/navigation_cubit.dart';
 import 'package:shopping_minna_pet/src/event/event_cubit.dart';
 
+import 'common/component/app_dot_navigation_bar.dart';
 import 'common/component/app_loading_circular.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -35,7 +36,7 @@ class HomeScreen extends StatelessWidget {
                     // 인기상품 1~3위
                     const _TopSellerScreen(),
                     const SizedBox(height: 30),
-                    ///커뮤니티
+                    // 커뮤니티
                     const _CommunityScreen()
                   ]
                 ),
@@ -45,38 +46,7 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
       // 하단 네비게이션 바
-      bottomNavigationBar: DotNavigationBar(
-        itemPadding: const EdgeInsets.all(14),
-        marginR: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
-        paddingR: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-        currentIndex: context.select<NavigationCubit, int>((value) => value.state.selectedNum!),
-        onTap: (index) {
-          context.read<NavigationCubit>().handleIndexChanged(index, context);
-        },
-        // dotIndicatorColor: Colors.black,
-        items: [
-          DotNavigationBarItem(
-            icon: const Icon(Icons.pets),
-            selectedColor: Colors.brown,
-          ),
-          DotNavigationBarItem(
-            icon: const Icon(Icons.emoji_events),
-            selectedColor: Colors.orange,
-          ),
-          DotNavigationBarItem(
-            icon: const Icon(Icons.home),
-            selectedColor: Colors.purple,
-          ),
-          DotNavigationBarItem(
-            icon: const Icon(Icons.shopping_cart),
-            selectedColor: Colors.black12,
-          ),
-          DotNavigationBarItem(
-            icon: const Icon(Icons.person),
-            selectedColor: Colors.teal,
-          ),
-        ],
-      ),
+      bottomNavigationBar: const AppDotNavgationBar()
     );
   }
 }
@@ -110,7 +80,7 @@ class _TopHomeScreen extends StatelessWidget {
         const SizedBox(width: 5.0),
         InkWell(
           onTap: () {
-            context.go('/profile');
+            context.read<NavigationCubit>().handleIndexChanged(4, context);
           },
           child: CircularProfileAvatar(
             profileImage,

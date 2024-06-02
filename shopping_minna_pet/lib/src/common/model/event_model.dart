@@ -5,16 +5,12 @@ part 'event_model.g.dart';
 
 class EventModelResult extends Equatable {
   final List<EventModel>? items;
-  const EventModelResult({
-    this.items
-  });
+  const EventModelResult({this.items});
 
   EventModelResult.init() : this(items: const []);
 
   EventModelResult copyWithFromList(List<EventModel> eventModels) {
-    return EventModelResult(
-        items: List.of(items ?? [])..addAll(eventModels)
-    );
+    return EventModelResult(items: List.of(items ?? [])..addAll(eventModels));
   }
 
   @override
@@ -30,6 +26,7 @@ class EventModel extends Equatable {
   final String? content;
   final DateTime? date;
   final String? eventProgress;
+  final bool? userImageAvailable;
 
   const EventModel({
     this.uuid,
@@ -38,9 +35,11 @@ class EventModel extends Equatable {
     this.content,
     this.date,
     this.eventProgress,
+    this.userImageAvailable,
   });
 
-  factory EventModel.fromJson(Map<String, dynamic> json) => _$EventModelFromJson(json);
+  factory EventModel.fromJson(Map<String, dynamic> json) =>
+      _$EventModelFromJson(json);
   Map<String, dynamic> toJson() => _$EventModelToJson(this);
 
   EventModel copyWith({
@@ -50,6 +49,7 @@ class EventModel extends Equatable {
     String? content,
     DateTime? date,
     String? eventProgress,
+    bool? userImageAvailable,
   }) {
     return EventModel(
       uuid: uuid ?? this.uuid,
@@ -58,10 +58,19 @@ class EventModel extends Equatable {
       content: content ?? this.content,
       date: date ?? this.date,
       eventProgress: eventProgress ?? this.eventProgress,
+      userImageAvailable: userImageAvailable ?? this.userImageAvailable,
     );
   }
 
   @override
   // TODO: implement props
-  List<Object?> get props => [uuid, eventImage, title, content, date, eventProgress];
+  List<Object?> get props => [
+        uuid,
+        eventImage,
+        title,
+        content,
+        date,
+        eventProgress,
+        userImageAvailable
+      ];
 }
