@@ -14,6 +14,7 @@ SaleModel _$SaleModelFromJson(Map<String, dynamic> json) => SaleModel(
               ?.map((e) => e as String)
               .toList() ??
           const [],
+      type: json['type'] as String?,
     );
 
 Map<String, dynamic> _$SaleModelToJson(SaleModel instance) => <String, dynamic>{
@@ -21,4 +22,5 @@ Map<String, dynamic> _$SaleModelToJson(SaleModel instance) => <String, dynamic>{
       'title': instance.title,
       'content': instance.content,
       'saleImages': instance.saleImages,
+      'type': instance.type,
     };

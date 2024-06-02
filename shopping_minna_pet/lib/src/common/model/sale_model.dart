@@ -28,12 +28,14 @@ class SaleModel extends Equatable {
   final String? title;
   final String? content;
   final List<String> saleImages;
+  final String? type;
 
   const SaleModel({
     this.uuid,
     this.title,
     this.content,
     this.saleImages = const [],
+    this.type,
   });
 
   factory SaleModel.fromJson(Map<String, dynamic> json) => _$SaleModelFromJson(json);
@@ -43,18 +45,19 @@ class SaleModel extends Equatable {
     String? uuid,
     String? title,
     String? content,
-    String? saleImage,
     List<String>? saleImages,
+    String? type,
   }) {
     return SaleModel(
       uuid: uuid ?? this.uuid,
       title: title ?? this.title,
       content: content ?? this.content,
       saleImages: saleImages ?? this.saleImages,
+      type: type ?? this.type,
     );
   }
 
   @override
   // TODO: implement props
-  List<Object?> get props => [uuid, title, content, saleImages];
+  List<Object?> get props => [uuid, title, content, saleImages, type];
 }
