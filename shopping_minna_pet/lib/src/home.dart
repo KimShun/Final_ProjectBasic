@@ -176,14 +176,24 @@ class _TopSellerScreen extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 10),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            ImageWithText('assets/app/best1.png', '1'),
-            ImageWithText('assets/app/best2.png', '2'),
-            ImageWithText('assets/app/best3.png', '3'),
-          ],
+
+        InkWell(
+          onTap: () {
+            context.push('/saledetail');
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              ImageWithText('assets/app/best1.png', '1'),
+              ImageWithText('assets/app/best2.png', '2'),
+              ImageWithText('assets/app/best3.png', '3'),
+            ],
+          ),
+
+
         ),
+
+
       ],
     );
   }

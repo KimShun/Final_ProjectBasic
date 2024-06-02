@@ -284,7 +284,7 @@ class SaleScreen extends StatelessWidget {
         ),
       ),
       // 하단 네비게이션 바
-      bottomNavigationBar: const AppDotNavgationBar()
+      bottomNavigationBar: const AppDotNavgationBar(),
     );
   }
 }

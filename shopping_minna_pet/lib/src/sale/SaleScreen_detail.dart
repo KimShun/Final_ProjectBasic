@@ -167,28 +167,28 @@ class _SaleDetailScreenState extends State<SaleDetailScreen> {
             SizedBox(
               width: 280.0,
               child: ElevatedButton(
-                  onPressed: () {
-                    // 로그인 버튼 클릭 시 동작을 여기에 추가합니다.
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(255, 3, 199, 90),
-                    surfaceTintColor: const Color.fromARGB(255, 3, 199, 90),
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 10.0, horizontal: 30),
-                    textStyle: const TextStyle(fontSize: 20),
-                    //primary: Colors.green,
+                onPressed: () {
+                  // 로그인 버튼 클릭 시 동작을 여기에 추가합니다.
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color.fromARGB(255, 3, 199, 90),
+                  surfaceTintColor: const Color.fromARGB(255, 3, 199, 90),
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
                   ),
-                  child: const AppText(
-                    title: "구매하기",
-                    fontSize: 25.0,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  )),
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 10.0, horizontal: 30),
+                  textStyle: const TextStyle(fontSize: 20),
+                  //primary: Colors.green,
+                ),
+                child: const AppText(
+                  title: "구매하기",
+                  fontSize: 25.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                )
+              ),
             ),
             const SizedBox(width: 15),
             const Icon(

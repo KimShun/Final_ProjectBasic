@@ -22,6 +22,7 @@ import 'package:shopping_minna_pet/src/common/repository/user_repository.dart';
 import 'package:shopping_minna_pet/src/event/event.dart';
 import 'package:shopping_minna_pet/src/event/event_cubit.dart';
 import 'package:shopping_minna_pet/src/event/write_event.dart';
+import 'package:shopping_minna_pet/src/event/EventScreen_detail.dart';
 import 'package:shopping_minna_pet/src/post/post_cubit.dart';
 import 'package:shopping_minna_pet/src/post/write_post.dart';
 import 'package:shopping_minna_pet/src/profile/ProfileScreen.dart';
@@ -32,6 +33,7 @@ import 'package:shopping_minna_pet/src/profile/my_written_post.dart';
 import 'package:shopping_minna_pet/src/sale/SaleScreen.dart';
 import 'package:shopping_minna_pet/src/sale/SaleScreen_detail.dart';
 import 'package:shopping_minna_pet/src/sale/cubit/sale_drop_and_group_cubit.dart';
+import 'package:shopping_minna_pet/src/event/EventScreen.dart';
 import 'firebase_options.dart';
 
 import 'src/home.dart';
@@ -166,6 +168,13 @@ final GoRouter _router = GoRouter(
     GoRoute(
       path: '/myWrittenPosts',
       builder: (context, state) => const MyWrittenPostsScreen(),
+    GoRoute(
+      path: '/event',
+      builder: (context, state) => const EventScreen(),
+    ),
+    GoRoute(
+      path: '/eventdetail',
+      builder: (context, state) => const EventDetailScreen(),
     )
   ]
 );
