@@ -32,6 +32,7 @@ class PostModel extends Equatable {
   final String? content;
   final DateTime? date;
   final int? likeCount;
+  final List<Map<String, dynamic>>? comments;
 
   const PostModel({
     this.uuid,
@@ -41,6 +42,7 @@ class PostModel extends Equatable {
     this.content,
     this.date,
     this.likeCount,
+    this.comments,
   });
 
   factory PostModel.fromJson(Map<String, dynamic> json) => _$PostModelFromJson(json);
@@ -54,6 +56,7 @@ class PostModel extends Equatable {
     DateTime? date,
     String? writerUid,
     int? likeCount,
+    List<Map<String, dynamic>>? comments,
   }) {
     return PostModel(
       uuid: uuid ?? this.uuid,
@@ -63,10 +66,11 @@ class PostModel extends Equatable {
       content: content ?? this.content,
       date: date ?? this.date,
       likeCount: likeCount ?? this.likeCount,
+      comments: comments ?? this.comments,
     );
   }
 
   @override
   // TODO: implement props
-  List<Object?> get props => [uuid, writerUid, images, title, content, date, likeCount];
+  List<Object?> get props => [uuid, writerUid, images, title, content, date, likeCount, comments];
 }
