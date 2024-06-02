@@ -30,6 +30,9 @@ class NavigationCubit extends Cubit<NavigationState> {
     else if(state.selectedTab == SelectedTab.pets) {
       context.push('/saledetail');
     }
+    else if(state.selectedTab == SelectedTab.emoji_events) {
+      context.push('/event');
+    }
 
     }
   }
@@ -37,7 +40,7 @@ class NavigationCubit extends Cubit<NavigationState> {
 
 enum SelectedTab {
   pets,
-  search,
+  emoji_events,
   home,
   shopping_cart,
   profile
@@ -49,7 +52,7 @@ List<DotNavigationBarItem> navigationItems = [
     selectedColor: Colors.brown,
   ),
   DotNavigationBarItem(
-    icon: const Icon(Icons.search),
+    icon: const Icon(Icons.emoji_events),
     selectedColor: Colors.orange,
   ),
   DotNavigationBarItem(
