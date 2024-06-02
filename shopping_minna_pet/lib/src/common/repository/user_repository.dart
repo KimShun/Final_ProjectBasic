@@ -34,7 +34,12 @@ class UserRepository {
 
   Future<bool> joinUser(UserModel userModel) async {
     try {
-      db.collection("users").add(userModel.toMap());
+      var doc = await db.collection("users").where("uid", isEqualTo: userModel.uid).get();
+      if(doc.docs.isEmpty) {
+        db.collection("users").add(userModel.toMap());
+      } else {
+        db.collection("users").doc(doc.docs.first.id).update(userModel.toMap());
+      }
       return true;
     } catch(e) {
       return false;

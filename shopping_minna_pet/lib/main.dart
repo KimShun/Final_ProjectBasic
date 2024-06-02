@@ -25,8 +25,13 @@ import 'package:shopping_minna_pet/src/event/write_event.dart';
 import 'package:shopping_minna_pet/src/post/post_cubit.dart';
 import 'package:shopping_minna_pet/src/post/write_post.dart';
 import 'package:shopping_minna_pet/src/profile/ProfileScreen.dart';
+import 'package:shopping_minna_pet/src/profile/cubit/modify_profile_cubit.dart';
+import 'package:shopping_minna_pet/src/profile/modify_profile.dart';
+import 'package:shopping_minna_pet/src/profile/my_liked_post.dart';
+import 'package:shopping_minna_pet/src/profile/my_written_post.dart';
 import 'package:shopping_minna_pet/src/sale/SaleScreen.dart';
 import 'package:shopping_minna_pet/src/sale/SaleScreen_detail.dart';
+import 'package:shopping_minna_pet/src/sale/cubit/sale_drop_and_group_cubit.dart';
 import 'firebase_options.dart';
 
 import 'src/home.dart';
@@ -89,7 +94,9 @@ class _MyAppState extends State<MyApp> {
           BlocProvider(create: (context) => UploadCubit(storage)),
           BlocProvider(create: (context) => PostCubit(context.read<AuthenticationCubit>().state.user!, context.read<PostRepository>())),
           BlocProvider(create: (context) => NavigationCubit()),
-          BlocProvider(create: (context) => EventCubit(context.read<EventRepository>()))
+          BlocProvider(create: (context) => EventCubit(context.read<EventRepository>())),
+          BlocProvider(create: (context) => SaleDropGroupCubit()),
+          BlocProvider(create: (context) => ModifyProfileCubit(context.read<AuthenticationCubit>().state.user!, context.read<UserRepository>()))
         ],
         child: MaterialApp.router(
           theme: ThemeData(
@@ -147,6 +154,18 @@ final GoRouter _router = GoRouter(
     GoRoute(
       path: '/saledetail',
       builder: (context, state) => const SaleDetailScreen(),
+    ),
+    GoRoute(
+      path: '/modifyProfile',
+      builder: (context, state) => const ModifyProfileScreen(),
+    ),
+    GoRoute(
+      path: '/myLikePosts',
+      builder: (context, state) => const MyLikedPostsScreen()
+    ),
+    GoRoute(
+      path: '/myWrittenPosts',
+      builder: (context, state) => const MyWrittenPostsScreen(),
     )
   ]
 );

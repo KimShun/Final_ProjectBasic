@@ -21,22 +21,28 @@ class EventCubit extends Cubit<EventState> {
   void HomeBannerLoad() async {
     emit(state.copyWith(status: EventStatus.loading));
     List<String>? imageList = await _eventRepository.loadEventsBannerList();
-    emit(state.copyWith(imageBannerList: imageList, status: EventStatus.success));
+    emit(state.copyWith(
+        imageBannerList: imageList, status: EventStatus.success));
   }
 
   void loadEvents(int limit, bool isInit) async {
     emit(state.copyWith(status: EventStatus.loading));
-    List<EventModel>? eventModels = await _eventRepository.loadEvents(limit, isInit);
+    List<EventModel>? eventModels =
+        await _eventRepository.loadEvents(limit, isInit);
 
-    if(eventModels != null) {
-      emit(state.copyWith(events: state.events!.copyWithFromList(eventModels), status: EventStatus.success));
+    if (eventModels != null) {
+      emit(state.copyWith(
+          events: state.events!.copyWithFromList(eventModels),
+          status: EventStatus.success));
     } else {
       emit(state.copyWith(status: EventStatus.error));
     }
   }
 
   void changeImage(XFile? imageFile) {
-    if(imageFile == null) { return; }
+    if (imageFile == null) {
+      return;
+    }
 
     var file = File(imageFile.path);
     emit(state.copyWith(eventImage: file));
@@ -62,18 +68,27 @@ class EventCubit extends Cubit<EventState> {
     emit(state.copyWith(mode: value));
   }
 
+  void changeImageMode(bool value) {
+    emit(state.copyWith(imageMode: value));
+  }
+
   void uploadPercent(String percent) {
     emit(state.copyWith(percent: percent));
   }
 
   void updateImageEventBanner(String url) {
-    emit(state.copyWith(eventModel: state.eventModel!.copyWith(eventImage: url), status: EventStatus.loading));
+    emit(state.copyWith(
+        eventModel: state.eventModel!.copyWith(eventImage: url),
+        status: EventStatus.loading));
     submit();
   }
 
   void save() {
-    if(state.title == null || state.title == "" || state.content == null || state.content == ""
-        || state.eventImage == null) return;
+    if (state.title == null ||
+        state.title == "" ||
+        state.content == null ||
+        state.content == "" ||
+        state.eventImage == null) return;
     emit(state.copyWith(status: EventStatus.loading));
 
     EventModel newEvent = EventModel(
@@ -82,10 +97,11 @@ class EventCubit extends Cubit<EventState> {
       date: state.date,
       uuid: state.uuid,
       eventProgress: state.mode ? "voting" : "joining",
+      userImageAvailable: state.imageMode,
     );
     emit(state.copyWith(eventModel: newEvent));
 
-    if(state.eventImage != null) {
+    if (state.eventImage != null) {
       emit(state.copyWith(status: EventStatus.uploading));
     } else {
       submit();
@@ -95,7 +111,7 @@ class EventCubit extends Cubit<EventState> {
   void submit() async {
     var result = await _eventRepository.createEvent(state.eventModel!);
 
-    if(result) {
+    if (result) {
       emit(state.copyWith(status: EventStatus.success));
     } else {
       emit(state.copyWith(status: EventStatus.error));
@@ -103,13 +119,7 @@ class EventCubit extends Cubit<EventState> {
   }
 }
 
-enum EventStatus {
-  init,
-  loading,
-  success,
-  uploading,
-  error
-}
+enum EventStatus { init, loading, success, uploading, error }
 
 class EventState extends Equatable {
   final String? uuid;
@@ -120,6 +130,7 @@ class EventState extends Equatable {
   final EventStatus status;
   final EventModelResult? events;
   final bool mode;
+  final bool imageMode;
   final EventModel? eventModel;
   final String? percent;
   final List<String>? imageBannerList;
@@ -133,6 +144,7 @@ class EventState extends Equatable {
     this.status = EventStatus.init,
     this.events,
     this.mode = false,
+    this.imageMode = false,
     this.eventModel,
     this.percent,
     this.imageBannerList,
@@ -147,6 +159,7 @@ class EventState extends Equatable {
     EventStatus? status,
     EventModelResult? events,
     bool? mode,
+    bool? imageMode,
     EventModel? eventModel,
     String? percent,
     List<String>? imageBannerList,
@@ -160,6 +173,7 @@ class EventState extends Equatable {
       status: status ?? this.status,
       events: events ?? this.events,
       mode: mode ?? this.mode,
+      imageMode: imageMode ?? this.imageMode,
       eventModel: eventModel ?? this.eventModel,
       percent: percent ?? this.percent,
       imageBannerList: imageBannerList ?? this.imageBannerList,
@@ -168,5 +182,5 @@ class EventState extends Equatable {
 
   @override
   // TODO: implement props
-  List<Object?> get props => [uuid, eventImage, title, content, status, date, events, mode, eventModel, percent, imageBannerList];
+  List<Object?> get props => [uuid, eventImage, title, content, status, date, events, mode, imageMode, eventModel, percent, imageBannerList];
 }

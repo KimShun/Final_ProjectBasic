@@ -32,7 +32,7 @@ class WritePostScreen extends StatelessWidget {
         listeners: [
           BlocListener<PostCubit, PostState>(
               listenWhen: (previous, current) => previous.status != current.status,
-              listener: (context, state) {
+              listener: (context, state) async {
                 switch (state.status) {
                   case PostStatus.init:
                     break;
@@ -42,7 +42,8 @@ class WritePostScreen extends StatelessWidget {
                     context.read<UploadCubit>().uploadImages(state.imageFiles, state.uuid!, "posts");
                     break;
                   case PostStatus.success:
-                    context.go("/");
+                    await Future.delayed(const Duration(milliseconds: 500));
+                    context.go("/"); context.push("/posts");
                     break;
                   case PostStatus.error:
                     break;

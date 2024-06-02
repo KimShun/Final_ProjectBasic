@@ -59,6 +59,7 @@ dependencies:
   card_swiper: ^3.0.1
   dropdown_button2: ^2.3.8
   group_button: ^5.3.4
+  dotted_border: ^2.1.0
 
 dev_dependencies:
   flutter_test:
