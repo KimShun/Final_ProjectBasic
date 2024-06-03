@@ -18,7 +18,7 @@ class AuthenticationRepository {
           ? null : UserModel(
             name: user.displayName,
             uid: user.uid,
-            email: (platform == "Google" || platform == "Apple") ? firebaseEmail ?? "" : kakaoUser?.kakaoAccount?.email ?? "",
+            email: user.email,
             adminAccount: false,
             platform: platform
           );

@@ -66,7 +66,8 @@ class SignUpCubit extends Cubit<SignUpState> {
       petBirthday: state.petBirthday,
       likePosts: [],
       point: 0,
-      coupons: []
+      coupons: [],
+      eventSigns: []
     );
     var result = await _userRepository.joinUser(joinUserModel);
 

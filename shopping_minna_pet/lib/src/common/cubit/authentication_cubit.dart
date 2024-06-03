@@ -34,13 +34,7 @@ class AuthenticationCubit extends HydratedCubit<AuthenticationState> {
           emit(state.copyWith(
               user: user, status: AuthenticationStatus.unAuthenticated));
         } else {
-          if (checkRegisterEmail?.platform != user.platform) {
-            emit(state.copyWith(
-                user: checkRegisterEmail, status: AuthenticationStatus.error));
-          } else {
-            emit(state.copyWith(
-                user: result, status: AuthenticationStatus.authentication));
-          }
+          emit(state.copyWith(user: result, status: AuthenticationStatus.authentication));
         }
       }
     }
@@ -52,13 +46,13 @@ class AuthenticationCubit extends HydratedCubit<AuthenticationState> {
 
   void googleLogin() async {
     await _authenticationRepository.signInWithGoogle();
-    await Future.delayed(const Duration(milliseconds: 1000));
+    // await Future.delayed(const Duration(milliseconds: 1000));
     init();
   }
 
   void kakaoLogin() async {
     await _authenticationRepository.signInWithKakao();
-    await Future.delayed(const Duration(milliseconds: 1000));
+    // await Future.delayed(const Duration(milliseconds: 1000));
     init();
   }
 

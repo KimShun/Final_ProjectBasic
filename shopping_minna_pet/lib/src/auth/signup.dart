@@ -23,7 +23,7 @@ class SignUpScreen extends StatelessWidget {
         listeners: [
           BlocListener<SignUpCubit, SignUpState>(
             listenWhen: (previous, current) => previous.status != current.status,
-            listener: (context, state) {
+            listener: (context, state) async {
               switch (state.status) {
                 case SignUpStatus.init:
                   break;
@@ -33,6 +33,7 @@ class SignUpScreen extends StatelessWidget {
                   context.read<UploadCubit>().uploadImage(state.profileFile!, state.userModel!.uid!, "users", "profile");
                   break;
                 case SignUpStatus.success:
+                  await Future.delayed(const Duration(milliseconds: 500));
                   context.read<AuthenticationCubit>().reloadAuth();
                   break;
                 case SignUpStatus.error:
