@@ -75,7 +75,7 @@ class PostCubit extends Cubit<PostState> {
     if(state.title == null || state.title == "" || state.content == null || state.content == "") return;
     emit(state.copyWith(status: PostStatus.loading));
 
-    PostModel newPost = PostModel(title: state.title, writerUid: state.writerUid, content: state.content, date: state.date, uuid: state.uuid, images: [], likeCount: 0);
+    PostModel newPost = PostModel(title: state.title, writerUid: state.writerUid, content: state.content, date: state.date, uuid: state.uuid, images: [], likeCount: 0, comments: []);
     emit(state.copyWith(postModel: newPost));
 
     if(state.imageFiles.isNotEmpty) {
