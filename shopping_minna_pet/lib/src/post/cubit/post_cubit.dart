@@ -4,18 +4,18 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../common/model/post_model.dart';
-import '../common/model/user_model.dart';
-import '../common/repository/post_repository.dart';
+import '../../common/model/post_model.dart';
+import '../../common/model/user_model.dart';
+import '../../common/repository/post_repository.dart';
 
 class PostCubit extends Cubit<PostState> {
   final UserModel userModel;
   final PostRepository _postRepository;
   PostCubit(this.userModel, this._postRepository) : super(PostState(writerUid: userModel.uid));
 
-  void init() {
+  void init(String? uid) {
     emit(state.copyWith(posts: PostModelResult.init(), status: PostStatus.init));
-    loadPosts(10, true, null);
+    loadPosts(10, true, uid);
   }
 
   void reset() {
@@ -60,6 +60,10 @@ class PostCubit extends Cubit<PostState> {
   void deletePostImage(int index) {
     var updatedImageFiles = List<File>.from(state.imageFiles)..removeAt(index);
     emit(state.copyWith(imageFiles: updatedImageFiles));
+  }
+
+  void deletePost(String uuid) async {
+    await _postRepository.deletePosts(uuid);
   }
 
   void changeDate() {

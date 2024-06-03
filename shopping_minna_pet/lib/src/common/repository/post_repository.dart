@@ -33,7 +33,7 @@ class PostRepository {
       if(uid == null) {
         query = db.collection("posts").orderBy("date", descending: true).limit(limit);
       } else {
-        query = db.collection("posts").orderBy("date", descending: true).where("writerUid", isEqualTo: uid).limit(limit);
+        query = db.collection("posts").where("writerUid", isEqualTo: uid).limit(limit);
       }
 
       if(lastDocument != null) {

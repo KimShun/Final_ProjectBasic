@@ -7,6 +7,7 @@ import 'package:shopping_minna_pet/src/common/component/color.dart';
 import 'package:shopping_minna_pet/src/common/cubit/authentication_cubit.dart';
 
 import '../common/component/app_dot_navigation_bar.dart';
+import '../common/model/user_model.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -29,7 +30,7 @@ class ProfileScreen extends StatelessWidget {
                     const SizedBox(height: 5.0),
                     const Divider(color: Colors.black38, thickness: 2),
                     const SizedBox(height: 5.0),
-                    const _UserUsageWidgets(),
+                    _UserUsageWidgets(userModel: context.select<AuthenticationCubit, UserModel>((value) => value.state.user!),),
                     const SizedBox(height: 15.0),
                     const _ProfileSelects(),
                     const SizedBox(height: 5.0),
@@ -222,7 +223,11 @@ class _UserCardWidget extends StatelessWidget {
 }
 
 class _UserUsageWidgets extends StatelessWidget {
-  const _UserUsageWidgets({super.key});
+  final UserModel userModel;
+
+  const _UserUsageWidgets({
+    required this.userModel,
+    super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -230,7 +235,7 @@ class _UserUsageWidgets extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         _UserUsageWidget(Icons.favorite, "좋아요한 글", () {context.push("/myLikePosts");}),
-        _UserUsageWidget(Icons.find_in_page, "작성한 글", () {context.push("/myWrittenPosts");}),
+        _UserUsageWidget(Icons.find_in_page, "작성한 글", () {context.push("/myWrittenPosts", extra: userModel);}),
         _UserUsageWidget(Icons.event_available, "이벤트내역", () {context.push("/myEventJoined");}),
         _UserUsageWidget(Icons.shopping_cart, "구매내역", () {context.push("/myPurchased");}),
       ],

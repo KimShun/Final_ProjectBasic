@@ -15,15 +15,19 @@ import 'package:shopping_minna_pet/src/common/component/color.dart';
 import 'package:shopping_minna_pet/src/common/cubit/authentication_cubit.dart';
 import 'package:shopping_minna_pet/src/common/cubit/navigation_cubit.dart';
 import 'package:shopping_minna_pet/src/common/cubit/upload_cubit.dart';
+import 'package:shopping_minna_pet/src/common/model/event_model.dart';
+import 'package:shopping_minna_pet/src/common/model/post_model.dart';
+import 'package:shopping_minna_pet/src/common/model/user_model.dart';
 import 'package:shopping_minna_pet/src/common/repository/authentication_repository.dart';
 import 'package:shopping_minna_pet/src/common/repository/event_repository.dart';
 import 'package:shopping_minna_pet/src/common/repository/post_repository.dart';
 import 'package:shopping_minna_pet/src/common/repository/user_repository.dart';
 import 'package:shopping_minna_pet/src/event/event.dart';
-import 'package:shopping_minna_pet/src/event/event_cubit.dart';
+import 'package:shopping_minna_pet/src/event/cubit/event_cubit.dart';
 import 'package:shopping_minna_pet/src/event/write_event.dart';
-import 'package:shopping_minna_pet/src/event/EventScreen_detail.dart';
-import 'package:shopping_minna_pet/src/post/post_cubit.dart';
+import 'package:shopping_minna_pet/src/event/event_detail.dart';
+import 'package:shopping_minna_pet/src/post/cubit/post_cubit.dart';
+import 'package:shopping_minna_pet/src/post/post_detail.dart';
 import 'package:shopping_minna_pet/src/post/write_post.dart';
 import 'package:shopping_minna_pet/src/profile/ProfileScreen.dart';
 import 'package:shopping_minna_pet/src/profile/cubit/modify_profile_cubit.dart';
@@ -33,7 +37,6 @@ import 'package:shopping_minna_pet/src/profile/my_written_post.dart';
 import 'package:shopping_minna_pet/src/sale/SaleScreen.dart';
 import 'package:shopping_minna_pet/src/sale/SaleScreen_detail.dart';
 import 'package:shopping_minna_pet/src/sale/cubit/sale_drop_and_group_cubit.dart';
-import 'package:shopping_minna_pet/src/event/EventScreen.dart';
 import 'package:shopping_minna_pet/src/shoppingbasket/BasketScreen.dart';
 import 'firebase_options.dart';
 
@@ -97,7 +100,7 @@ class _MyAppState extends State<MyApp> {
           BlocProvider(create: (context) => UploadCubit(storage)),
           BlocProvider(create: (context) => PostCubit(context.read<AuthenticationCubit>().state.user!, context.read<PostRepository>())),
           BlocProvider(create: (context) => NavigationCubit()),
-          BlocProvider(create: (context) => EventCubit(context.read<EventRepository>())),
+          BlocProvider(create: (context) => EventCubit(context.read<AuthenticationCubit>().state.user!, context.read<EventRepository>(), context.read<UserRepository>())),
           BlocProvider(create: (context) => SaleDropGroupCubit()),
           BlocProvider(create: (context) => ModifyProfileCubit(context.read<AuthenticationCubit>().state.user!, context.read<UserRepository>()))
         ],
@@ -168,19 +171,19 @@ final GoRouter _router = GoRouter(
     ),
     GoRoute(
       path: '/myWrittenPosts',
-      builder: (context, state) => const MyWrittenPostsScreen(),
-    ),
-    GoRoute(
-      path: '/event',
-      builder: (context, state) => const EventScreen(),
+      builder: (context, state) => MyWrittenPostsScreen(userModel: state.extra as UserModel),
     ),
     GoRoute(
       path: '/eventdetail',
-      builder: (context, state) => const EventDetailScreen(),
+      builder: (context, state) => EventDetailScreen(eventModel: state.extra as EventModel),
     ),
     GoRoute(
       path: '/basket',
       builder: (context, state) => const BasketScreen(),
     ),
+    GoRoute(
+      path: '/postdetail',
+      builder: (context, state) => PostDetailScreen(postModel: state.extra as PostModel),
+    )
   ]
 );

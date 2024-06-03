@@ -3,10 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../common/component/app_text.dart';
 import '../common/cubit/authentication_cubit.dart';
-import '../post/post_cubit.dart';
+import '../common/model/user_model.dart';
+import '../post/cubit/post_cubit.dart';
 
 class MyWrittenPostsScreen extends StatefulWidget {
-  const MyWrittenPostsScreen({super.key});
+  final UserModel userModel;
+
+  const MyWrittenPostsScreen({
+    required this.userModel,
+    super.key});
 
   @override
   State<MyWrittenPostsScreen> createState() => _MyWrittenPostsScreenState();
@@ -16,7 +21,7 @@ class _MyWrittenPostsScreenState extends State<MyWrittenPostsScreen> {
   @override
   void initState() {
     // TODO: implement initState
-    context.read<PostCubit>().init();
+    context.read<PostCubit>().init(widget.userModel.uid);
     super.initState();
   }
 

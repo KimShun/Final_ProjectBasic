@@ -15,6 +15,9 @@ EventModel _$EventModelFromJson(Map<String, dynamic> json) => EventModel(
           json['date'] == null ? null : DateTime.parse(json['date'] as String),
       eventProgress: json['eventProgress'] as String?,
       userImageAvailable: json['userImageAvailable'] as bool?,
+      userEventSign: (json['userEventSign'] as List<dynamic>?)
+          ?.map((e) => e as Map<String, dynamic>)
+          .toList(),
     );
 
 Map<String, dynamic> _$EventModelToJson(EventModel instance) =>
@@ -26,4 +29,5 @@ Map<String, dynamic> _$EventModelToJson(EventModel instance) =>
       'date': instance.date?.toIso8601String(),
       'eventProgress': instance.eventProgress,
       'userImageAvailable': instance.userImageAvailable,
+      'userEventSign': instance.userEventSign,
     };

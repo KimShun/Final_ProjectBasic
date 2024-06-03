@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shopping_minna_pet/src/common/component/app_text.dart';
-import 'package:shopping_minna_pet/src/post/post_cubit.dart';
+import 'package:shopping_minna_pet/src/post/cubit/post_cubit.dart';
 import 'package:uuid/uuid.dart';
 
 import '../common/component/app_loading_circular.dart';

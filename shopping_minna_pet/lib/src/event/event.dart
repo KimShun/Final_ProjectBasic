@@ -1,11 +1,14 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shopping_minna_pet/src/common/component/app_dot_navigation_bar.dart';
 import 'package:shopping_minna_pet/src/common/component/app_text.dart';
 import 'package:shopping_minna_pet/src/common/cubit/authentication_cubit.dart';
-import 'package:shopping_minna_pet/src/post/post_cubit.dart';
+import 'package:shopping_minna_pet/src/post/cubit/post_cubit.dart';
 
-import 'event_cubit.dart';
+import '../common/model/event_model.dart';
+import 'cubit/event_cubit.dart';
 
 class EventPageScreen extends StatefulWidget {
   const EventPageScreen({super.key});
@@ -59,15 +62,11 @@ class _EventPageScreenState extends State<EventPageScreen> {
                       itemCount: state.events!.items!.length,
                       separatorBuilder: (context, index) => const Divider(),
                       itemBuilder: (context, index) {
-                        return SizedBox(
-                          height: 180,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(40),
-                            child: Image.network(
-                              state.events!.items![index].eventImage!,
-                              fit: BoxFit.fill,
-                            ),
-                          ),
+                        return ImageWithText(
+                          state.events!.items![index].eventImage!,
+                          state.events!.items![index].eventProgress!,
+                          state.events!.items![index],
+                          context
                         );
                       },
                     );
@@ -90,6 +89,57 @@ class _EventPageScreenState extends State<EventPageScreen> {
                 }
               ),
             )
+          ],
+        ),
+      ),
+      bottomNavigationBar: const AppDotNavgationBar(),
+    );
+  }
+
+  Widget ImageWithText(String imagePath, String text, EventModel eventModel, BuildContext context) {
+    return SizedBox(
+      height: 200,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(8.0),
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: Image.network(imagePath,
+                fit: BoxFit.fill,
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ElevatedButton(
+                  onPressed: () {
+                    if(text == '참여하기' ||text == '투표하기'|| text == '결과확인') {
+                      context.push('/eventdetail', extra: eventModel);
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: text == "참여하기" ? const Color.fromARGB(255, 3, 199, 90)
+                        : text == "투표하기" ? const Color.fromARGB(255, 254, 220, 0) : const Color.fromARGB(255, 255, 130, 69),
+                    surfaceTintColor: text == "참여하기" ? const Color.fromARGB(255, 3, 199, 90)
+                        : text == "투표하기" ? const Color.fromARGB(255, 254, 220, 0) : const Color.fromARGB(255, 255, 130, 69),
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal:30),
+                    textStyle: const TextStyle(fontSize: 20),
+                    //primary: Colors.green,
+                  ),
+                  child:  AppText(
+                    title: text,
+                    fontSize: 25.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  )
+                ),
+              ),
+            ),
           ],
         ),
       ),
