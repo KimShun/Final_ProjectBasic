@@ -27,6 +27,7 @@ class EventModel extends Equatable {
   final DateTime? date;
   final String? eventProgress;
   final bool? userImageAvailable;
+  final List<Map<String, dynamic>>? userEventSign;
 
   const EventModel({
     this.uuid,
@@ -36,6 +37,7 @@ class EventModel extends Equatable {
     this.date,
     this.eventProgress,
     this.userImageAvailable,
+    this.userEventSign,
   });
 
   factory EventModel.fromJson(Map<String, dynamic> json) =>
@@ -50,6 +52,7 @@ class EventModel extends Equatable {
     DateTime? date,
     String? eventProgress,
     bool? userImageAvailable,
+    List<Map<String, dynamic>>? userEventSign,
   }) {
     return EventModel(
       uuid: uuid ?? this.uuid,
@@ -59,18 +62,11 @@ class EventModel extends Equatable {
       date: date ?? this.date,
       eventProgress: eventProgress ?? this.eventProgress,
       userImageAvailable: userImageAvailable ?? this.userImageAvailable,
+      userEventSign: userEventSign ?? this.userEventSign,
     );
   }
 
   @override
   // TODO: implement props
-  List<Object?> get props => [
-        uuid,
-        eventImage,
-        title,
-        content,
-        date,
-        eventProgress,
-        userImageAvailable
-      ];
+  List<Object?> get props => [uuid, eventImage, title, content, date, eventProgress, userImageAvailable, userEventSign];
 }

@@ -7,7 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:shopping_minna_pet/src/common/component/app_text.dart';
 import 'package:shopping_minna_pet/src/common/cubit/authentication_cubit.dart';
 import 'package:shopping_minna_pet/src/common/cubit/navigation_cubit.dart';
-import 'package:shopping_minna_pet/src/event/event_cubit.dart';
+import 'package:shopping_minna_pet/src/event/cubit/event_cubit.dart';
 
 import 'common/component/app_dot_navigation_bar.dart';
 import 'common/component/app_loading_circular.dart';
@@ -111,7 +111,7 @@ class _HomeEventBanner extends StatelessWidget {
         if (state.imageBannerList != null && state.imageBannerList!.isNotEmpty) {
           return GestureDetector(
             onTap: () {
-              context.push("/events");
+              context.read<NavigationCubit>().handleIndexChanged(1, context);
             },
             child: SizedBox(
               height: 200,

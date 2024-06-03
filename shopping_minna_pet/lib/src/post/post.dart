@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shopping_minna_pet/src/common/component/app_text.dart';
 import 'package:shopping_minna_pet/src/common/cubit/authentication_cubit.dart';
-import 'package:shopping_minna_pet/src/post/post_cubit.dart';
+import 'package:shopping_minna_pet/src/post/cubit/post_cubit.dart';
 
 class PostScreen extends StatefulWidget {
   const PostScreen({super.key});
@@ -19,7 +19,7 @@ class _PostScreenState extends State<PostScreen> {
   @override
   void initState() {
     // TODO: implement initState
-    context.read<PostCubit>().init();
+    context.read<PostCubit>().init(null);
     super.initState();
   }
 
@@ -72,40 +72,44 @@ class _PostScreenState extends State<PostScreen> {
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column (
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  AppText(
-                                    title: "${state.posts!.items![index].title}",
-                                    fontSize: 15.0,
-                                    color: Colors.black,
-                                  ),
-                                  FutureBuilder<String?>(
-                                    future: context.read<AuthenticationCubit>().findUserName(state.posts!.items![index].writerUid!),
-                                    builder: (context, snapshot) {
-                                      if(snapshot.hasData) {
-                                        return AppText(
-                                          title: "${state.posts!.items![index].date!.year}-${state.posts!.items![index].date!.month}-${state.posts!.items![index].date!.day} "
-                                              "/ ${snapshot.data}",
+                          child: InkWell(
+                            splashColor: Colors.transparent,
+                            onTap: () => context.push("/postdetail", extra: state.posts!.items![index]),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column (
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    AppText(
+                                      title: "${state.posts!.items![index].title}",
+                                      fontSize: 15.0,
+                                      color: Colors.black,
+                                    ),
+                                    FutureBuilder<String?>(
+                                      future: context.read<AuthenticationCubit>().findUserName(state.posts!.items![index].writerUid!),
+                                      builder: (context, snapshot) {
+                                        if(snapshot.hasData) {
+                                          return AppText(
+                                            title: "${state.posts!.items![index].date!.year}-${state.posts!.items![index].date!.month}-${state.posts!.items![index].date!.day} "
+                                                "/ ${snapshot.data}",
+                                            fontSize: 12.0,
+                                            color: Colors.grey,
+                                          );
+                                        }
+
+                                        return const AppText(
+                                          title: "알수없음",
                                           fontSize: 12.0,
                                           color: Colors.grey,
                                         );
-                                      }
-
-                                      return const AppText(
-                                        title: "알수없음",
-                                        fontSize: 12.0,
-                                        color: Colors.grey,
-                                      );
-                                    },
-                                  ),
-                                ],
-                              ),
-                              _showPostImage(images: state.posts!.items![index].images!)
-                            ],
+                                      },
+                                    ),
+                                  ],
+                                ),
+                                _showPostImage(images: state.posts!.items![index].images!)
+                              ],
+                            ),
                           ),
                         );
                       },

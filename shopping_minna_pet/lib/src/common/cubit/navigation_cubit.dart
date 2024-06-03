@@ -1,6 +1,5 @@
 import 'package:dot_navigation_bar/dot_navigation_bar.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -31,7 +30,7 @@ class NavigationCubit extends Cubit<NavigationState> {
       context.push('/saledetail');
     }
     else if(state.selectedTab == SelectedTab.emoji_events) {
-      context.push('/event');
+      context.push('/events');
     }
     else if(state.selectedTab == SelectedTab.shopping_cart) {
       context.push('/basket');

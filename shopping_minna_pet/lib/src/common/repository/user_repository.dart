@@ -45,4 +45,27 @@ class UserRepository {
       return false;
     }
   }
+
+  Future<bool> updateEventSign(UserModel userModel, String uuid) async {
+    print(userModel.uid!);
+    try {
+      var doc = await db.collection("users").where("uid", isEqualTo: userModel.uid).get();
+      if (doc.docs.isEmpty) {
+        return false;
+      }
+
+      UserModel loadUser = UserModel.fromJson(doc.docs.first.data());
+
+      List<String> updatedEventSigns = List.from(loadUser.eventSigns ?? []);
+      updatedEventSigns.add(uuid);
+
+      UserModel mergeUser = loadUser.copyWith(eventSigns: updatedEventSigns);
+      await db.collection("users").doc(doc.docs.first.id).update(mergeUser.toMap());
+
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
 }

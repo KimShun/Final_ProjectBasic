@@ -10,7 +10,18 @@ class EventRepository {
 
   Future<bool> createEvent(EventModel eventModel) async {
     try {
-      db.collection("events").add(eventModel.toJson());
+      var doc = await db.collection("events").where("uuid", isEqualTo: eventModel.uuid).get();
+      if(doc.docs.isEmpty) {
+        db.collection("events").add(eventModel.toJson());
+      } else {
+        EventModel loadEvent = EventModel.fromJson(doc.docs.first.data());
+
+        List<Map<String, dynamic>> updatedEventSigns = List.from(loadEvent.userEventSign ?? []);
+        updatedEventSigns.add(eventModel.userEventSign![0]);
+
+        EventModel mergeEvent = loadEvent.copyWith(userEventSign: updatedEventSigns);
+        await db.collection("events").doc(doc.docs.first.id).update(mergeEvent.toJson());
+      }
       return true;
     } catch(e) {
       return false;

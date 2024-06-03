@@ -18,6 +18,7 @@ class UserModel extends Equatable {
   final List<String>? likePosts;
   final List<String>? coupons;
   final int? point;
+  final List<String>? eventSigns;
 
   const UserModel({
     this.uid,
@@ -32,7 +33,8 @@ class UserModel extends Equatable {
     this.platform,
     this.likePosts,
     this.coupons,
-    this.point
+    this.point,
+    this.eventSigns,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);
@@ -52,6 +54,7 @@ class UserModel extends Equatable {
     List<String>? likePosts,
     List<String>? coupons,
     int? point,
+    List<String>? eventSigns,
   }) {
     return UserModel(
       uid: uid ?? this.uid,
@@ -67,10 +70,12 @@ class UserModel extends Equatable {
       likePosts: likePosts ?? this.likePosts,
       coupons: coupons ?? this.coupons,
       point: point ?? this.point,
+      eventSigns: eventSigns ?? this.eventSigns,
     );
   }
 
   @override
   // TODO: implement props
-  List<Object?> get props => [uid, name, email, profile, discription, petType, petName, petBirthday, adminAccount, platform, likePosts, coupons, point];
+  List<Object?> get props => [uid, name, email, profile, discription, petType,
+    petName, petBirthday, adminAccount, platform, likePosts, coupons, point, eventSigns];
 }

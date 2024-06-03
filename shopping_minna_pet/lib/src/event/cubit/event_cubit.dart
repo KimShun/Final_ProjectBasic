@@ -2,20 +2,48 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../common/model/event_model.dart';
-import '../common/repository/event_repository.dart';
+import '../../common/model/event_model.dart';
+import '../../common/model/user_model.dart';
+import '../../common/repository/event_repository.dart';
+import '../../common/repository/user_repository.dart';
 
 class EventCubit extends Cubit<EventState> {
+  final UserModel userModel;
   final EventRepository _eventRepository;
-  EventCubit(this._eventRepository) : super(EventState()) {
+  final UserRepository _userRepository;
+
+  EventCubit(this.userModel, this._eventRepository, this._userRepository) : super(EventState(
+    signName: TextEditingController(text: userModel.name),
+    signPetName: TextEditingController(text: userModel.petName),
+    signResolve: TextEditingController(text: ""),
+  )) {
     HomeBannerLoad();
   }
 
   void init() {
     emit(state.copyWith(events: EventModelResult.init()));
     loadEvents(10, true);
+  }
+
+  void changeSignName(String value) {
+    state.signName!.text = value;
+    state.signName!.selection = TextSelection.fromPosition(TextPosition(offset: state.signName!.text.length));
+    emit(state.copyWith(signName: state.signName));
+  }
+
+  void changeSignPetName(String value) {
+    state.signPetName!.text = value;
+    state.signPetName!.selection = TextSelection.fromPosition(TextPosition(offset: state.signPetName!.text.length));
+    emit(state.copyWith(signPetName: state.signPetName));
+  }
+
+  void changeSignResolve(String value) {
+    state.signResolve!.text = value;
+    state.signResolve!.selection = TextSelection.fromPosition(TextPosition(offset: state.signResolve!.text.length));
+    emit(state.copyWith(signResolve: state.signResolve));
   }
 
   void HomeBannerLoad() async {
@@ -46,6 +74,15 @@ class EventCubit extends Cubit<EventState> {
 
     var file = File(imageFile.path);
     emit(state.copyWith(eventImage: file));
+  }
+
+  void changeSignEventImage(XFile? imageFile) {
+    if (imageFile == null) {
+      return;
+    }
+
+    var file = File(imageFile.path);
+    emit(state.copyWith(signEventImage: file));
   }
 
   void changeTitle(String title) {
@@ -83,6 +120,49 @@ class EventCubit extends Cubit<EventState> {
     submit();
   }
 
+  void updateUserEventImage(String url) {
+    emit(state.copyWith(
+      eventModel: state.eventModel!.copyWith(
+        userEventSign: [{
+          "signName": state.signName!.text,
+          "signPetName": state.signPetName!.text,
+          "resolve": state.signResolve!.text,
+          "userUid": userModel.uid,
+          "imageUrl": url,
+        }]
+      ),
+      status: EventStatus.loading,
+    ));
+    submit();
+    userUpdateEvent();
+  }
+
+  void userEventSignSave(EventModel eventModel) {
+    emit(state.copyWith(eventModel: eventModel));
+    if (state.signName!.text == "" || state.signPetName!.text == "" || state.signResolve!.text == ""
+        || (state.eventModel!.userImageAvailable! && state.signEventImage == null)) return;
+
+    emit(state.copyWith(status: EventStatus.loading));
+
+    EventModel newEvent = state.eventModel!.copyWith(
+      userEventSign: [{
+        "signName": state.signName!.text,
+        "signPetName": state.signPetName!.text,
+        "resolve": state.signResolve!.text,
+        "userUid": userModel.uid,
+      }],
+    );
+
+    emit(state.copyWith(eventModel: newEvent));
+
+    if(state.eventModel!.userImageAvailable!) {
+      emit(state.copyWith(status: EventStatus.uploading));
+    } else {
+      submit();
+      userUpdateEvent();
+    }
+  }
+
   void save() {
     if (state.title == null ||
         state.title == "" ||
@@ -96,7 +176,7 @@ class EventCubit extends Cubit<EventState> {
       content: state.content,
       date: state.date,
       uuid: state.uuid,
-      eventProgress: state.mode ? "voting" : "joining",
+      eventProgress: state.mode ? "투표하기" : "참여하기",
       userImageAvailable: state.imageMode,
     );
     emit(state.copyWith(eventModel: newEvent));
@@ -105,6 +185,16 @@ class EventCubit extends Cubit<EventState> {
       emit(state.copyWith(status: EventStatus.uploading));
     } else {
       submit();
+    }
+  }
+
+  void userUpdateEvent() async {
+    var result = await _userRepository.updateEventSign(userModel, state.eventModel!.uuid!);
+
+    if (result) {
+      emit(state.copyWith(status: EventStatus.success));
+    } else {
+      emit(state.copyWith(status: EventStatus.error));
     }
   }
 
@@ -134,6 +224,10 @@ class EventState extends Equatable {
   final EventModel? eventModel;
   final String? percent;
   final List<String>? imageBannerList;
+  final TextEditingController? signName;
+  final TextEditingController? signPetName;
+  final TextEditingController? signResolve;
+  final File? signEventImage;
 
   const EventState({
     this.uuid,
@@ -148,6 +242,10 @@ class EventState extends Equatable {
     this.eventModel,
     this.percent,
     this.imageBannerList,
+    this.signName,
+    this.signPetName,
+    this.signResolve,
+    this.signEventImage,
   });
 
   EventState copyWith({
@@ -163,6 +261,10 @@ class EventState extends Equatable {
     EventModel? eventModel,
     String? percent,
     List<String>? imageBannerList,
+    TextEditingController? signName,
+    TextEditingController? signPetName,
+    TextEditingController? signResolve,
+    File? signEventImage,
   }) {
     return EventState(
       uuid: uuid ?? this.uuid,
@@ -177,10 +279,15 @@ class EventState extends Equatable {
       eventModel: eventModel ?? this.eventModel,
       percent: percent ?? this.percent,
       imageBannerList: imageBannerList ?? this.imageBannerList,
+      signName: signName ?? this.signName,
+      signPetName: signPetName ?? this.signPetName,
+      signResolve: signResolve ?? this.signResolve,
+      signEventImage: signEventImage ?? this.signEventImage,
     );
   }
 
   @override
   // TODO: implement props
-  List<Object?> get props => [uuid, eventImage, title, content, status, date, events, mode, imageMode, eventModel, percent, imageBannerList];
+  List<Object?> get props => [uuid, eventImage, title, content, status, date, events,
+    mode, imageMode, eventModel, percent, imageBannerList, signName, signPetName, signResolve, signEventImage];
 }
