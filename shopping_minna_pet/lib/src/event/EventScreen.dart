@@ -122,7 +122,7 @@ class _EventScreenState extends State<EventScreen> {
           ),
           DotNavigationBarItem(
             icon: const Icon(Icons.shopping_cart),
-            selectedColor: Colors.black12,
+            selectedColor: Colors.pink,
           ),
           DotNavigationBarItem(
             icon: const Icon(Icons.person),

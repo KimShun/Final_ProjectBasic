@@ -137,7 +137,7 @@ class SaleScreen extends StatelessWidget {
                         color: Colors.brown[50]!,
                       //color: Colors.amber[900]!,
                     ),
-                    color: Colors.pink[50],
+                    color: Colors.brown[50],
                   ),
                   elevation: 2,
                 ),
@@ -157,7 +157,7 @@ class SaleScreen extends StatelessWidget {
                       border: Border.all(
                         color: Colors.black38,
                       ),
-                      color: Colors.pink[50],
+                      color: Colors.brown[50],
                     ),
                     //offset: const Offset(0, 0),
                     scrollbarTheme: ScrollbarThemeData(
@@ -186,9 +186,9 @@ class SaleScreen extends StatelessWidget {
                         fontSize: 20,
                         color: Colors.pink[900],
                       ),
-                      selectedColor: Colors.pink[100],
+                      selectedColor: Colors.brown[50],
                       unselectedShadow: const [],
-                      unselectedColor: Colors.pink[50],
+                      unselectedColor: Colors.brown[50],
                       unselectedTextStyle: TextStyle(
                         fontSize: 20,
                         color: Colors.amber[900],

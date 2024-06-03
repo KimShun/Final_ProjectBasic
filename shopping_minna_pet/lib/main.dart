@@ -34,6 +34,7 @@ import 'package:shopping_minna_pet/src/sale/SaleScreen.dart';
 import 'package:shopping_minna_pet/src/sale/SaleScreen_detail.dart';
 import 'package:shopping_minna_pet/src/sale/cubit/sale_drop_and_group_cubit.dart';
 import 'package:shopping_minna_pet/src/event/EventScreen.dart';
+import 'package:shopping_minna_pet/src/shoppingbasket/BasketScreen.dart';
 import 'firebase_options.dart';
 
 import 'src/home.dart';
@@ -168,6 +169,7 @@ final GoRouter _router = GoRouter(
     GoRoute(
       path: '/myWrittenPosts',
       builder: (context, state) => const MyWrittenPostsScreen(),
+    ),
     GoRoute(
       path: '/event',
       builder: (context, state) => const EventScreen(),
@@ -175,6 +177,10 @@ final GoRouter _router = GoRouter(
     GoRoute(
       path: '/eventdetail',
       builder: (context, state) => const EventDetailScreen(),
-    )
+    ),
+    GoRoute(
+      path: '/basket',
+      builder: (context, state) => const BasketScreen(),
+    ),
   ]
 );

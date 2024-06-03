@@ -37,7 +37,8 @@ class HomeScreen extends StatelessWidget {
                     const _TopSellerScreen(),
                     const SizedBox(height: 30),
                     // 커뮤니티
-                    const _CommunityScreen()
+                    const _CommunityScreen(),
+                    const _LocationScreen(),
                   ]
                 ),
               ],
@@ -241,7 +242,7 @@ class _CommunityScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 0.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -250,7 +251,7 @@ class _CommunityScreen extends StatelessWidget {
               children: [
                 InputDecorator(
                   decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.fromLTRB(20,62,10,50),
+                    contentPadding: const EdgeInsets.fromLTRB(20,62,10,0),
                     labelText: '  게시판',
                     labelStyle: const TextStyle(fontWeight:FontWeight.bold,fontSize: 20.0,),
                     enabledBorder: OutlineInputBorder(
@@ -258,49 +259,153 @@ class _CommunityScreen extends StatelessWidget {
                       borderSide: const BorderSide(color: Colors.brown,width:10 ),
                     ),
                   ),
-                  child: Row(
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      TextButton(
-                        onPressed: () {
-                          context.push("/posts");
-                        },
-                        child: const Text(
-                          '최근',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 12.0,
-                            fontWeight: FontWeight.bold,
-                          ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child:TextButton(
+                            onPressed: () {
+                              context.push("/posts");
+                            },
+                            child: const AppText(
+                              title: '최근',
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            )
                         ),
+
                       ),
-                      TextButton(
-                        onPressed: () {},
-                        child: const Text(
-                          '베스트',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 12.0,
-                            fontWeight: FontWeight.bold,
-                          ),
+
+                      Text('익명 1 : 나눔 공지!!!! 선착순입니다 오늘까지 연락 주세요 '),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child:TextButton(
+                            onPressed: () {
+                              context.push("/posts");
+                            },
+                            child: const AppText(
+                              title: '베스트',
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            )
                         ),
+
                       ),
+                      Text('익명 2 : 왕앙아앙 우주 최강 짱 귀여미 저희 집 고양이 자랑 좀 하겠습니닷ㅇ ㅎㅎ'),
                     ],
                   ),
                 ),
               ],
             ),
           ),
-          const SizedBox(width: 20.0),
-          Container(
-            padding: const EdgeInsets.all(80),
-            decoration: BoxDecoration(
-              color: Colors.amber[200],
-              borderRadius: const BorderRadius.all(Radius.circular(20)),
-            )
-          ),
+
+
         ]
       ),
+    );
+  }
+}
+
+class _LocationScreen extends StatelessWidget {
+  const _LocationScreen ({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Padding(
+      padding: EdgeInsets.only(top:10, right:30),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          AppText(
+            title: '출입 가능 가게',
+            fontSize: 25.0,
+            color: Colors.orangeAccent,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _AmenitiesRow(
+                  imagePath: "assets/app/shop.png",
+                  titleName: "애견샵",
+                  type: "shop",
+                //imageWidth: 00.0,
+                // imageHeight: 00.0,
+              ),
+              // SizedBox(width: 50.0),
+              _AmenitiesRow(
+                imagePath: "assets/app/hospital.png",
+                titleName: "병원",
+                type: "hospital",
+                //imageWidth: 00.0,
+                //imageHeight: 00.0,
+
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _AmenitiesRow(
+                imagePath: "assets/app/restaurant.png",
+                titleName: "음식점",
+                type: "restaurant",
+                //imageWidth: 00.0,
+                // imageHeight: 00.0,
+              ),
+
+              // SizedBox(width: 50.0),
+              _AmenitiesRow(
+                imagePath: "assets/app/park.png",
+                titleName: "공원",
+                type: "park",
+
+              ),
+            ],
+          )
+        ],
+      ),
+    );
+  }
+}
+class _AmenitiesRow extends StatelessWidget {
+  final String imagePath;
+  final String titleName;
+  final String type;
+  //final double imageWidth;
+ // final double imageHeight;
+
+  const _AmenitiesRow({
+    required this.imagePath,
+    required this.titleName,
+    required this.type,
+    //required this.imageWidth,
+    //required this.imageHeight,
+    super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          IconButton(
+              onPressed: () => context.push("/app/$type"),
+              icon: Image.asset(imagePath,
+                //width: 100,
+                //height: 100,
+              )
+          ),
+          const SizedBox(width: 3.0),
+          Text(titleName,
+            style: const TextStyle(
+                color: Colors.black,
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold
+            ),
+          ),
+        ]
     );
   }
 }

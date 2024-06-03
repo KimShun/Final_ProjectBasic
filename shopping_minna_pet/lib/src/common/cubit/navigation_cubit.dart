@@ -33,6 +33,9 @@ class NavigationCubit extends Cubit<NavigationState> {
     else if(state.selectedTab == SelectedTab.emoji_events) {
       context.push('/event');
     }
+    else if(state.selectedTab == SelectedTab.shopping_cart) {
+      context.push('/basket');
+    }
 
     }
   }
@@ -61,7 +64,7 @@ List<DotNavigationBarItem> navigationItems = [
   ),
   DotNavigationBarItem(
     icon: const Icon(Icons.shopping_cart),
-    selectedColor: Colors.black12,
+    selectedColor: Colors.pink,
   ),
   DotNavigationBarItem(
     icon: const Icon(Icons.person),
