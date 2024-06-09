@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shopping_minna_pet/src/common/component/app_text.dart';
 import 'package:shopping_minna_pet/src/common/cubit/authentication_cubit.dart';
@@ -251,6 +250,8 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final userUid = context.select<AuthenticationCubit, String>((value) => value.state.user!.uid!);
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -279,7 +280,7 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
                   break;
                 case EventStatus.uploading:
                   context.read<UploadCubit>().uploadImage(
-                      state.signEventImage!, state.eventModel!.uuid!, "events/${state.eventModel!.uuid!}", "image");
+                      state.signEventImage!, state.eventModel!.uuid!, "events/${state.eventModel!.uuid!}", userUid);
                   break;
                 case EventStatus.success:
                   context.read<AuthenticationCubit>().reloadAuth();
@@ -531,28 +532,25 @@ class _AlreadySignEvent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if(context.select<AuthenticationCubit, List<String>>((value) => value.state.user!.eventSigns!).contains(uuid) || eventProcess != "참여하기") {
-      return Padding(
-        padding: const EdgeInsets.only(bottom: 25.0),
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.black.withOpacity(0.5),
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          child: const Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                AppText(
-                  title: "이미 참가하셨거나 /\n 참가기간이 아닙니다.",
-                  fontSize: 23.0,
-                ),
-                SizedBox(height: 10.0),
-                Icon(Icons.how_to_vote_outlined,
-                  color: Colors.redAccent,
-                  size: 50.0,
-                )
-              ],
-            ),
+      return Container(
+        decoration: BoxDecoration(
+          color: Colors.black.withOpacity(0.5),
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: const Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              AppText(
+                title: "이미 참가하셨거나 /\n 참가기간이 아닙니다.",
+                fontSize: 23.0,
+              ),
+              SizedBox(height: 10.0),
+              Icon(Icons.how_to_vote_outlined,
+                color: Colors.redAccent,
+                size: 50.0,
+              )
+            ],
           ),
         ),
       );
